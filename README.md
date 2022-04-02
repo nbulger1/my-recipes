@@ -4,7 +4,7 @@
 Have recipe cards, animation to show recipes being pulled out of a box. Recipes will have nutritional information and portion size. Webpage will have a search function to allow search with an ingredient. Webpage will also have a dropdown list of Health Labels.
 Audience: Home chefs.
 
-### User Story:
+## User Story & Acceptance Criteria:
 As a homechef,
 I want to make easy-to-read recipe
 So that I can cook at home
