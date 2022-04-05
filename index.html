@@ -24,12 +24,16 @@
                 <div class="uk-navbar-item uk-navbar-right">
                     <form id="food-search" class="uk-form-horizontal">
                         <input id="keyword-text" type="text" class="uk-input form-horizontal-text" placeholder="Keywords">
-                        <div class="uk-button-group">
-                            <button id="health-label" class="uk-button uk-button-default">Health Label</button>
-                            <button id="cuisine-type" class="uk-button uk-button-default">Cuisine Type</button>
-                            <button id="meal-type" class="uk-button uk-button-default">Meal Type</button>
-                            <button id="search-button" class="uk-button uk-button-default">Feed Me!</button>
-                        </div>
+                        <label for="health-label">Health Label</label>
+                        <select id="health-label" class="uk-select" name="health-label">
+                        </select>
+                        <label for="cuisine-type">Cuisine Type</label>
+                        <select id="cuisine-type" class="uk-select" name="cuisin-type">
+                        </select>
+                        <label for="meal-type">Meal Type</label>
+                        <select id="meal-type" class="uk-select" name="meal-type">
+                        </select>
+                        <input type="submit" class="uk-button uk-button-default" value="Feed Me!"/>
                     </form>
                 </div>
             </div>
