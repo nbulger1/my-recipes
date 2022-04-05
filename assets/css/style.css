@@ -11,3 +11,7 @@
     background-color: rgb(189, 189, 189);
     height: 100vh;
 }
+
+.custom-comment {
+    background-color: rgb(196, 196, 255);
+}
