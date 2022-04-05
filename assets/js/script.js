@@ -1,4 +1,4 @@
-var pEl = document.getElementById("test");
+var feedMeEl = document.getElementById("search-button");
 var searchTermEl //e.g Chicken
 var recipeSearchAppID = "d2a0908b";
 var recipeSearchAppKey = "6a95aab79ad4dec19b99622d9625382e";
@@ -25,7 +25,7 @@ function getApi(event) {
     })  
 }
 
-pEl.addEventListener('click', getApi);
+feedMeEl.addEventListener('click', getApi);
 
 var recipeCardContainerEl = document.querySelector(".recipe-card-container");
 var recipeCardEl = document.querySelectorAll(".recipe-card");
@@ -98,7 +98,6 @@ function displaySummaryRecipeCards(repos){
         recipeCardEl[i].appendChild(baseInfoContainerEl);
         recipeCardEl[i].appendChild(macroInfoContainerEl);
         recipeCardEl[i].appendChild(imageContainerEl);
-
     }
 
 };
@@ -109,5 +108,87 @@ recipeCardContainerEl.addEventListener("click", function(event){
 });
 
 function displayChosenRecipeCard(recipeIndex) {
+    //Gather all the necessary information for the recipe cards
+    //Gather recipe title
+    var recipeTitle = repos.hits[recipeIndex].recipe.label;
+    //Number of servings the recipe makes
+    var numberOfServings =  repos.hits[recipeIndex].recipe.yield + " Servings";
+    //Number of kcal in the recipe
+    var kcalCount = repos.hits[recipeIndex].recipe.calories.toFixed(1) + " kcal";
+    //Protein amount in grams
+    var proteinAmount = "Protein: " + repos.hits[recipeIndex].recipe.totalNutrients.PROCNT.quantity.toFixed(1) + " g";
+    var fatAmount = "Fat: " + repos.hits[recipeIndex].recipe.totalNutrients.FAT.quantity.toFixed(1) + " g";
+    var carbAmount = "Carb: " + repos.hits[recipeIndex].recipe.totalNutrients.CHOCDF.quantity.toFixed(1) + " g";
+    var imagePath = repos.hits[recipeIndex].recipe.image;
+    var recipeUrl = repos.hits[recipeIndex].recipe.url;
+    var recipeLength = repos.hits[recipeIndex].recipe.ingredientLines;
+    var ingredientListEl = document.createElement('ul');
+    for(var i=0; i<recipeLength; i++){
+        var ingredientListItemEl = document.createElement('li');
+        ingredientListItemEl.textContent = recipeLength[i];
+        ingredientListEl.appendChild(ingredientListItemEl);
+    };
+
+    //Create the child elements for the base information div
+    var baseInfoContainerEl = document.createElement('div');
+    baseInfoContainerEl.classList.add("recipe-card-info");
+    var recipeTitleEl = document.createElement('h3');
+    var numberOfServingsEl = document.createElement('p');
+    var kcalCountEl = document.createElement('p');
+    var proteinAmountEl = document.createElement('p');
+    var fatAmountEl = document.createElement('p');
+    var carbAmountEl = document.createElement('p');
+    var ingredientListHeaderEl = document.createElement('h3');
+
+    var imageContainerEl = document.createElement('img');
+    imageContainerEl.classList.add("recipe-card-info");
+
+    //Apply the text content using the gathered information and child elements
+    recipeTitleEl.textContent = recipeTitle;
+    numberOfServingsEl.textContent = numberOfServings;
+    kcalCountEl.textContent = kcalCount;
+    proteinAmountEl.textContent = proteinAmount;
+    fatAmountEl.textContent = fatAmount;
+    carbAmountEl.textContent = carbAmount;
+    ingredientListHeaderEl.textContent = "Ingredient List";
+
+    imageContainerEl.setAttribute("src", imagePath);
+
+    //Appending Children to the base information
+    baseInfoContainerEl.appendChild(recipeTitleEl);
+    baseInfoContainerEl.appendChild(proteinAmountEl);
+    baseInfoContainerEl.appendChild(fatAmountEl);
+    baseInfoContainerEl.appendChild(carbAmountEl);
+    baseInfoContainerEl.appendChild(ingredientListHeaderEl);
+    baseInfoContainerEl.appendChild(ingredientListEl);
+
+    //Nutrition Information Card Elements
+
+    var nutritionInfoCardEl = document.createElement('div');
+    var nutritionInfoCardHeaderEl = document.createElement('h4');
+    var nutritionNumberOfServingsEl = document.createElement('p');
+    var amountPerServingHeaderEl = document.createElement('p');
+    var nutritionCaloriesEl = document.createElement('p')
+    var percentDailyValueEl = document.createElement('p');
+    var nutritionFatEl = document.createElement('p');
+    var nutritionCholesterolEl = document.createElement('p');
+    var nutritionSodiumEl = document.createElement('p');
+    var nutritionCarbEl = document.createElement('p');
+    var nutritionFiberEl = document.createElement('p');
+    var nutritionSugarsEl = document.createElement('p');
+    var nutritionProteinEl = document.createElement('p');
+    var disclaimerEl = document.createElement('p');
+
+    //variables that pull
+
+    //Text content of each of the new elements
+    nutritionInfoCardHeaderEl.textContent = "Nutrition Facts";
+    nutritionNumberOfServingsEl.textContent = numberOfServings + " servings per recipe";
+    amountPerServingHeaderEl.textContent = "Amount Per Serving";
+    nutritionCaloriesEl.textContent = "Calories " + kcalCount;
+    percentDailyValueEl.textContent = "% Daily Value*";
+    nutritionFatEl = "Total Fat " + fatAmount + "g" + " " + repos.hit[recipeIndex].recipe + "%";
+    nutritionCholesterolEl = "Cholesterol " + cholesterol + "mg" + cholesterol + "%";
+    nutritionSodiumEl = "Cholesterol " + cholesterol + "mg" + cholesterol + "%";
 
 }
