@@ -1,0 +1,13 @@
+.custom-container {
+    height: 100vh;
+    overflow: hidden;
+}
+
+.custom-logo {
+    margin: auto 5rem;
+}
+
+.custom-side {
+    background-color: rgb(189, 189, 189);
+    height: 100vh;
+}
