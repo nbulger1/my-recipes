@@ -30,6 +30,14 @@
     height: auto;
 }
 
+.custom-form select {
+    width: 10rem;
+}
+
+.custom-form input {
+    width: 15rem;
+}
+
 /**Scrollbar Accessories**/
 ::-webkit-scrollbar {
     width: 5px;
