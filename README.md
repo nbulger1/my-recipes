@@ -33,10 +33,10 @@ Then I can view the nutrition information
 1. Create submit button handler that will make API call to the edamam to recipe info. Identify data attribute (could be ingredient list for e.g. for HW it was City)
 1. Make another call to edamame nutrition to get the nutrition info for all 5 recipes
 1. Upon making API call, populate a list of recpies (top 5) that confirm to search and filter criteria
-    1. Create tags to display recipe cards that lists the top 5 recipes
-    1. User selects a recipe to view
-        1. All of the other recipe cards disappear and the selected recipe container expands
-        1. The recipe and image and nutrition info are shown for selcted recipe.
+    * Create tags to display recipe cards that lists the top 5 recipes
+    * User selects a recipe to view
+    * All of the other recipe cards disappear and the selected recipe container expands
+    * The recipe and image and nutrition info are shown for selcted recipe.
 1. User is able to change serach term and filter to find a new recipe.
 
 ## Validation Steps:
