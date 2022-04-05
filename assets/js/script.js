@@ -141,6 +141,16 @@ function displayChosenRecipeCard(recipeIndex) {
         ingredientListEl.appendChild(ingredientListItemEl);
     };
 
+    var shoppingList = repos.hits[recipeIndex].recipe.ingredients
+    var shoppingListHeaderEl = document.createElement('h3');
+    shoppingListHeaderEl.textContent = "Possible Shopping List";
+    var shoppingListEl = document.createElement('ul');
+    for(var i=0; i < shoppingList.length; i++){
+        var shoppingListItemsEl = document.createElement('li');
+        shoppingListItemsEl.textContent = shoppingList[i].food;
+        shoppingListEl.appendChild(shoppingListItemsEl);        
+    };
+
     var imageContainerEl = document.createElement('img');
     imageContainerEl.classList.add("recipe-card-info");
     var saveThisRecipeEl = document.createElement('button');
@@ -164,6 +174,8 @@ function displayChosenRecipeCard(recipeIndex) {
     baseInfoContainerEl.appendChild(carbAmountEl);
     baseInfoContainerEl.appendChild(ingredientListHeaderEl);
     baseInfoContainerEl.appendChild(ingredientListEl);
+    baseInfoContainerEl.appendChild(shoppingListEl);
+    baseInfoContainerEl.appendChild(shoppingListHeaderEl);
     baseInfoContainerEl.appendChild(saveThisRecipeEl);
 
     //Nutrition Information Card Elements
@@ -214,6 +226,4 @@ function displayChosenRecipeCard(recipeIndex) {
     nutritionInfoCardEl.appendChild(nutritionProteinEl);
     nutritionInfoCardEl.appendChild(disclaimerEl);
 
-
-
-}
+};
