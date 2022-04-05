@@ -123,11 +123,6 @@ function displayChosenRecipeCard(recipeIndex) {
     var recipeUrl = repos.hits[recipeIndex].recipe.url;
     var recipeLength = repos.hits[recipeIndex].recipe.ingredientLines;
     var ingredientListEl = document.createElement('ul');
-    for(var i=0; i<recipeLength; i++){
-        var ingredientListItemEl = document.createElement('li');
-        ingredientListItemEl.textContent = recipeLength[i];
-        ingredientListEl.appendChild(ingredientListItemEl);
-    };
 
     //Create the child elements for the base information div
     var baseInfoContainerEl = document.createElement('div');
@@ -139,9 +134,16 @@ function displayChosenRecipeCard(recipeIndex) {
     var fatAmountEl = document.createElement('p');
     var carbAmountEl = document.createElement('p');
     var ingredientListHeaderEl = document.createElement('h3');
+    //Loop through ingredient list and pull
+    for(var i=0; i<recipeLength; i++){
+        var ingredientListItemEl = document.createElement('li');
+        ingredientListItemEl.textContent = recipeLength[i];
+        ingredientListEl.appendChild(ingredientListItemEl);
+    };
 
     var imageContainerEl = document.createElement('img');
     imageContainerEl.classList.add("recipe-card-info");
+    var saveThisRecipeEl = document.createElement('button');
 
     //Apply the text content using the gathered information and child elements
     recipeTitleEl.textContent = recipeTitle;
@@ -151,6 +153,7 @@ function displayChosenRecipeCard(recipeIndex) {
     fatAmountEl.textContent = fatAmount;
     carbAmountEl.textContent = carbAmount;
     ingredientListHeaderEl.textContent = "Ingredient List";
+    saveThisRecipeEl.textContent = "Save This Recipe!";
 
     imageContainerEl.setAttribute("src", imagePath);
 
@@ -161,6 +164,7 @@ function displayChosenRecipeCard(recipeIndex) {
     baseInfoContainerEl.appendChild(carbAmountEl);
     baseInfoContainerEl.appendChild(ingredientListHeaderEl);
     baseInfoContainerEl.appendChild(ingredientListEl);
+    baseInfoContainerEl.appendChild(saveThisRecipeEl);
 
     //Nutrition Information Card Elements
 
@@ -187,8 +191,29 @@ function displayChosenRecipeCard(recipeIndex) {
     amountPerServingHeaderEl.textContent = "Amount Per Serving";
     nutritionCaloriesEl.textContent = "Calories " + kcalCount;
     percentDailyValueEl.textContent = "% Daily Value*";
-    nutritionFatEl = "Total Fat " + fatAmount + "g" + " " + repos.hit[recipeIndex].recipe + "%";
-    nutritionCholesterolEl = "Cholesterol " + cholesterol + "mg" + cholesterol + "%";
-    nutritionSodiumEl = "Cholesterol " + cholesterol + "mg" + cholesterol + "%";
+    nutritionFatEl.textContent = "Total Fat " + fatAmount + "g" + " " + repos.hit[recipeIndex].recipe + "%";
+    nutritionCholesterolEl.textContent = "Cholesterol " + cholesterol + "mg" + cholesterol + "%";
+    nutritionSodiumEl.textContent = "Sodium " + sodium + "mg" + sodium + "%";
+    nutritionCarbEl.textContent = "Total Carb " + carbAmount + "g" + carb + "%";
+    nutritionFiberEl.textContent = "Dietary Fiber " + fiber + "g" + fiber + "%";
+    nutritionSugarsEl.textContent = "Total Sugars " + sugars + "g" + sugars + "%";
+    nutritionProteinEl.textContent = "Protein " + proteinAmount + "g" + protein + "%";
+    disclaimerEl.textContent = "*Percent Daily Values are based on 2000 calorie diet";
+
+    nutritionInfoCardEl.appendChild(nutritionInfoCardHeaderEl);
+    nutritionInfoCardEl.appendChild(nutritionNumberOfServingsEl);
+    nutritionInfoCardEl.appendChild(amountPerServingHeaderEl);
+    nutritionInfoCardEl.appendChild(nutritionCaloriesEl);
+    nutritionInfoCardEl.appendChild(percentDailyValueEl);
+    nutritionInfoCardEl.appendChild(nutritionFatEl);
+    nutritionInfoCardEl.appendChild(nutritionCholesterolEl);
+    nutritionInfoCardEl.appendChild(nutritionSodiumEl);
+    nutritionInfoCardEl.appendChild(nutritionCarbEl);
+    nutritionInfoCardEl.appendChild(nutritionFiberEl);
+    nutritionInfoCardEl.appendChild(nutritionSugarsEl);
+    nutritionInfoCardEl.appendChild(nutritionProteinEl);
+    nutritionInfoCardEl.appendChild(disclaimerEl);
+
+
 
 }
