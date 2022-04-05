@@ -24,9 +24,10 @@
     height: 90%;
 }
 
-.customcard {
+.custom-card {
     margin: 10px;
     background-color: white;
+    height: auto;
 }
 
 /**Scrollbar Accessories**/
