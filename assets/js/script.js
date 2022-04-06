@@ -232,7 +232,7 @@ function displayChosenRecipeCard(recipeIndex) {
 function localStorage(recipeIndex) {
     var recipeTitleStorage = JSON.parse(localStorage.getItem("recipeTitle")) || [];
     var recipeUrlStorage = JSON.parse(localStorage.getItem("recipeUrl")) || [];
-    var recipeTitle = repos.hits[recipeIndex].recipe.ingredients;
+    var recipeTitle = repos.hits[recipeIndex].recipe.label;
     var recipeUrl = repos.hits[recipeIndex].recipe.url;
 
     //If the current citySubmit array doesn't contain the city entered then push it to the array and add a search history button
@@ -245,8 +245,7 @@ function localStorage(recipeIndex) {
         recipeTitleHistoryEl.appendChild(recipeUrlEl);
         recipeTitleHistoryEl.textContent = recipeTitle;
         //classes that the button needs?
-        // recipeTitleHistoryEl.classList = "btn search-history";
-        recipeTitleHistoryEl.setAttribute("data-recipe-title", recipeTitle);
+        recipeTitleHistoryEl.classList = "uk-button uk-button-default";
         //determine where the saved buttons are going
         // searchHistoryContainerEl.appendChild(cityHistoryEl);
     } else {
@@ -266,15 +265,14 @@ window.addEventListener("load", function(){
     var recipeTitleReload = JSON.parse(localStorage.getItem("recipeTitle")) || [];
 
     //Go through each of the cities in the array and create a button with the city as a data attribute
-    for(var i=0; i<citySubmitReload.length; i++){
+    for(var i=0; i<recipeUrlReload.length; i++){
         var recipeTitleHistoryEl = document.createElement("button");
         var recipeUrlEl = document.createElement("a");
-        a.href = recipeUrl;
+        a.href = recipeUrlReload[i];
         recipeTitleHistoryEl.appendChild(recipeUrlEl);
-        recipeTitleHistoryEl.textContent = recipeTitle;
+        recipeTitleHistoryEl.textContent = recipeTitleReload[i];
         //classes that the button needs?
-        // recipeTitleHistoryEl.classList = "btn search-history";
-        recipeTitleHistoryEl.setAttribute("data-recipe-title", recipeTitle);
+        recipeTitleHistoryEl.classList = "uk-button uk-button-default";
         //determine where the saved buttons are going
         // searchHistoryContainerEl.appendChild(cityHistoryEl);
     };
