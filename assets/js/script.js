@@ -1,31 +1,53 @@
-var pEl = document.getElementById("test");
-var searchTermEl //e.g Chicken
+var searchButtonEl = document.getElementById("search-button");
+var searchTermEl = document.getElementById("keyword-text") //e.g Chicken
 var recipeSearchAppID = "d2a0908b";
 var recipeSearchAppKey = "6a95aab79ad4dec19b99622d9625382e";
-var healthLabelEl //e.g alcohol free, celery free etc.
-var cuisineTypeEl //asian, american etc.
-var mealTypeEl //dinner, lunch etc.
+var recipeNutritionAppID = "8f0d8aac";
+var recipeNutritionAppKey = "188bfe0aca8fc01b7aa9e29ef1001500";
+var healthLabelEl = document.getElementById("health-label"); //e.g alcohol free, celery free etc.
+var cuisineTypeEl = document.getElementById("cuisine-type");//asian, american etc.
+var mealTypeEl = document.getElementById("meal-type"); //dinner, lunch etc.
 
-function getApi(event) {
+
+function getRecipeSearchApi(event) {
     //Use this when submitting form so that it prevents a full page refresh which clears the console.
     event.preventDefault();
-    console.log("click");
 
-    recipeSearchUrl = `https://api.edamam.com/api/recipes/v2?type=public&q=chicken&app_id=${recipeSearchAppID}&app_key=${recipeSearchAppKey}&health=${healthLabelEl}&cuisineType=${cuisineTypeEl}&mealType=${mealTypeEl}&imageSize=REGULAR`
-    //https://api.edamam.com/api/recipes/v2?type=public&q=chicken&app_id=d2a0908b&app_key=6a95aab79ad4dec19b99622d9625382e&health=alcohol-free&cuisineType=Asian&mealType=Dinner&imageSize=REGULAR
+    var searchTermValue = searchTermEl.value.trim();
+    var healthLabelValue = "alcohol-free"; //TODO change to dynamic drop down value
+    var cuisineTypeValue = "American" ; //TODO change to dynamic drop down value
+    var mealTypeValue = "Dinner"; //TODO change to dynamic drop down value
+
+
+    recipeSearchUrl = `https://api.edamam.com/api/recipes/v2?type=public&q=${searchTermValue}&app_id=${recipeSearchAppID}&app_key=${recipeSearchAppKey}&health=${healthLabelValue}&cuisineType=${cuisineTypeValue}&mealType=${mealTypeValue}&imageSize=REGULAR`
+    // recipeSearchUrl = `https://api.edamam.com/api/recipes/v2?type=public&q=chicken&app_id=d2a0908b&app_key=6a95aab79ad4dec19b99622d9625382e&health=alcohol-free&cuisineType=Asian&mealType=Dinner&imageSize=REGULAR`
 
   fetch(recipeSearchUrl)
     .then(function (response) {
-       // console.log(response.json());
       return response.json();
     }) 
     .then(function(data) {
+        console.log(data);
+        var recipeSearchFoodID = "" //TODO change to actual Food ID
+        var recipeSearchUri = "" //TODO change to actual URI
+        getRecipeNutritionApi(recipeSearchFoodID,recipeSearchUri);
 
-        console.log(data);  
     })  
 }
 
-pEl.addEventListener('click', getApi);
+searchButtonEl.addEventListener('click', getRecipeSearchApi);
+
+function getRecipeNutritionApi(recipeSearchFoodID,recipeSearchUri) {
+  var getRecipeNutritionApi = `https://api.edamam.com/api/nutrition-details?app_id=${recipeNutritionAppID}&app_key=${recipeNutritionAppKey}`;
+  fetch(getRecipeNutritionApi)
+  .then(function (response) {
+      return response.json();
+  })
+  .then(function(data) {
+    console.log(data); 
+
+  });
+}
 
 var recipeCardContainerEl = document.querySelector(".recipe-card-container");
 var recipeCardEl = document.querySelectorAll(".recipe-card");
