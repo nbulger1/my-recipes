@@ -36,7 +36,6 @@ function getRecipeSearchApi(event) {
         // var recipeSearchUri = "" //TODO change to actual URI
         //getRecipeNutritionApi(recipeSearchFoodID,recipeSearchUri);
         displaySummaryRecipeCards(data);
-
     })  
 }
 
@@ -108,13 +107,13 @@ function displaySummaryRecipeCards(repos){
         var kcalCountEl = document.createElement('p');
 
         var macroInfoContainerEl = document.createElement('div');
-        macroInfoContainerEl.classList.add("recipe-card-info");
+        macroInfoContainerEl.classList.add("recipe-card-nutrition");
         var proteinAmountEl = document.createElement('p');
         var fatAmountEl = document.createElement('p');
         var carbAmountEl = document.createElement('p');
 
         var imageContainerEl = document.createElement('img');
-        imageContainerEl.classList.add("recipe-card-info");
+        imageContainerEl.classList.add("recipe-card-img");
 
         //Apply the text content using the gathered information and child elements
         recipeTitleEl.textContent = recipeTitle;
