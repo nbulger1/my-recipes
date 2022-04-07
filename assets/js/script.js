@@ -21,6 +21,7 @@ function getRecipeSearchApi(event) {
     var healthLabelValue = healthLabelEl.value;
     var cuisineTypeValue = cuisineTypeEl.value;
     var mealTypeValue = mealTypeEl.value;
+    console.log(searchTermValue, healthLabelValue, cuisineTypeValue, mealTypeValue)
 
     recipeSearchUrl = `https://api.edamam.com/api/recipes/v2?type=public&q=${searchTermValue}&app_id=${recipeSearchAppID}&app_key=${recipeSearchAppKey}&health=${healthLabelValue}&cuisineType=${cuisineTypeValue}&mealType=${mealTypeValue}&imageSize=REGULAR`
     // recipeSearchUrl = `https://api.edamam.com/api/recipes/v2?type=public&q=chicken&app_id=d2a0908b&app_key=6a95aab79ad4dec19b99622d9625382e&health=alcohol-free&cuisineType=Asian&mealType=Dinner&imageSize=REGULAR`
