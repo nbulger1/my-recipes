@@ -25,17 +25,17 @@
                     <form id="food-search" class="custom-form">
                         <input id="keyword-text" type="text" class="uk-input form-horizontal-text" placeholder="Keywords" required>
                         <label for="health-label">Health Label</label>
-                        <select id="health-label" class="uk-select" name="health-label">
+                        <select id="health-label" class="uk-select" name="health-label" required>
                             <option value="" disabled selected>Select a restriction</option>
                             <option value="alcohol-free">Alcohol-Free</option>
-                            <option value="immune-supportive">Immune-Supportive</option>
+                            <option value="immuno-supportive">Immuno-Supportive</option>
                             <option value="celery-free">Celery-Free</option>
                             <option value="crustacean-free">Crustacean-Free</option>
                             <option value="dairy-free">Dairy</option>
                             <option value="egg-free">Eggs</option>
                             <option value="fish-free">Fish</option>
                             <option value="fodmap-free">FODMAP-Free</option>
-                            <option value="gluten-free">Gluten</option>
+                            <option value="gluten-free">Gluten-Free</option>
                             <option value="keto-friendly">Keto</option>
                             <option value="kidney-friendly">Kidney Friendly</option>
                             <option value="kosher">Kosher</option>
@@ -61,7 +61,7 @@
                         </select>
 
                         <label for="cuisine-type">Cuisine Type</label>
-                        <select id="cuisine-type" class="uk-select" name="cuisine-type">
+                        <select id="cuisine-type" class="uk-select" name="cuisine-type" required>
                             <option value="" disabled selected>Select a region</option>
                             <option value="American">American</option>
                             <option value="Asian">Asian</option>
@@ -93,7 +93,7 @@
                             <option value="Teatime">Teatime</option>
                         </select>
                         
-                        <input type="submit" class="uk-button uk-button-default custom-submit" value="Feed Me!"/>
+                        <input id="search-button" type="submit" class="uk-button uk-button-default custom-submit" value="Feed Me!"/>
                     </form>
                 </div>
             </div>
@@ -105,15 +105,18 @@
 
             <div class="uk-grid uk-grid-medium uk-height-1-1">
 
-                <div class="uk-width-1-4@m custom-side uk-visible@m">
-                    <p>Decorative Sidebar</p>
+                <div class="uk-width-1-4@m custom-side uk-height-">
+                    <div class="saved-recipe-container" id="saved-recipes">
+                        <button class="clear-recipe-history uk-button uk-button-default">Clear Recipe History</button>
+                        <button class="uk-button uk-button-default saved-recipe-button">ABC</button>
+                    </div>
                 </div>
                 <!--Need to update the sizing of all of the content to fit the new input changes, etc.-->
                 <div class="uk-width-3-4@m">
                     <div id="recipe-container" class="uk-container recipe-card-container">
                         <div class="uk-card custom-card">
                             <div class="uk-card-body recipe-card">
-                            
+
                             </div>
                         </div>
 
