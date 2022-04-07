@@ -71,9 +71,14 @@ searchTermEl.addEventListener('keydown', getRecipeAutoCompleteApi);
 var recipeCardContainerEl = document.querySelector(".recipe-card-container");
 var recipeCardEl = document.querySelectorAll(".recipe-card");
 var saveRecipeContainerEl = document.querySelector("#saved-recipes");
+var cardClosed = true;
 
 //function to display the fivedayforecast 
 function displaySummaryRecipeCards(repos){
+
+    if(!cardClosed){
+        cardClosed = true;
+    };
 
     //Clear out five recipe cards
     for(var i=0; i<recipeCardEl.length; i++){
@@ -140,9 +145,15 @@ function displaySummaryRecipeCards(repos){
         recipeCardEl[i].appendChild(baseInfoContainerEl);
         recipeCardEl[i].appendChild(macroInfoContainerEl);
         recipeCardEl[i].appendChild(imageContainerEl);
-        baseInfoContainerEl.setAttribute("data-index", i);
-        macroInfoContainerEl.setAttribute("data-index", i);
-        imageContainerEl.setAttribute("data-index", i);
+
+        var clickToExpandEl = document.createElement('button');
+        clickToExpandEl.setAttribute("data-index", i);
+        clickToExpandEl.textContent = "Click to Expand"
+        baseInfoContainerEl.appendChild(clickToExpandEl);
+
+        // baseInfoContainerEl.setAttribute("data-index", i);
+        // macroInfoContainerEl.setAttribute("data-index", i);
+        // imageContainerEl.setAttribute("data-index", i);
 
     }
 
@@ -150,12 +161,20 @@ function displaySummaryRecipeCards(repos){
 
 recipeCardContainerEl.addEventListener("click", function(event){
     var recipeIndex = event.target.getAttribute("data-index");
-    console.log(recipeIndex);
     // getRecipeSearchApi(event);
-    displayChosenRecipeCard(repos, recipeIndex);
+    if(cardClosed){
+        displayChosenRecipeCard(repos, recipeIndex);
+    } else {
+        displaySummaryRecipeCards(repos, recipeIndex);
+    };
+
 });
 
 function displayChosenRecipeCard(repos, recipeIndex) {
+
+    if(cardClosed){
+        cardClosed = false;
+    }
     //Gather all the necessary information for the recipe cards
     //Gather recipe title
     var recipeTitle = repos.hits[recipeIndex].recipe.label;
@@ -280,6 +299,12 @@ function displayChosenRecipeCard(repos, recipeIndex) {
     recipeCardEl[recipeIndex].appendChild(baseInfoContainerEl);
     recipeCardEl[recipeIndex].appendChild(imageContainerEl);
     recipeCardEl[recipeIndex].appendChild(nutritionInfoCardEl);
+
+    clickToCloseEl = document.createElement('button');
+    clickToCloseEl.setAttribute("data-index", i);
+    clickToCloseEl.textContent = "Click to Close"
+    baseInfoContainerEl.appendChild(clickToCloseEl);
+
 
     saveThisRecipeEl.addEventListener("click", function(){
         var recipeTitleStorage = JSON.parse(localStorage.getItem("recipeTitle")) || [];
