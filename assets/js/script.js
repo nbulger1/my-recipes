@@ -290,12 +290,13 @@ function displayChosenRecipeCard(repos, recipeIndex) {
             recipeUrlStorage.push(recipeUrl)
             var recipeTitleHistoryEl = document.createElement("button");
             var recipeUrlEl = document.createElement("a");
+            recipeUrlEl.target = "_blank";
             recipeUrlEl.href = recipeUrl;
-            recipeTitleHistoryEl.appendChild(recipeUrlEl);
+            recipeUrlEl.appendChild(recipeTitleHistoryEl);
             recipeTitleHistoryEl.textContent = recipeTitle;
             //classes that the button needs?
             recipeTitleHistoryEl.classList = "uk-button uk-button-default";
-            saveRecipeContainerEl.appendChild(recipeTitleHistoryEl);
+            saveRecipeContainerEl.appendChild(recipeUrlEl);
         } else {
             //Let the user know there is already a history button for a city if it was previously searched
             alert("That recipe is already in your recents!");
@@ -317,14 +318,16 @@ window.addEventListener("load", function(){
     for(var i=0; i<recipeUrlReload.length; i++){
         var recipeTitleHistoryEl = document.createElement("button");
         var recipeUrlEl = document.createElement("a");
+        recipeUrlEl.target = "_blank";
         recipeUrlEl.href = recipeUrlReload[i];
-        recipeTitleHistoryEl.appendChild(recipeUrlEl);
+        recipeUrlEl.appendChild(recipeTitleHistoryEl);
         recipeTitleHistoryEl.textContent = recipeTitleReload[i];
         //classes that the button needs?
         recipeTitleHistoryEl.classList = "uk-button uk-button-default";
         //determine where the saved buttons are going
-        saveRecipeContainerEl.appendChild(recipeTitleHistoryEl);
+        saveRecipeContainerEl.appendChild(recipeUrlEl);
     };
+
 })
 
 var clearRecipeHistoryEl = document.querySelector(".clear-recipe-history");
