@@ -54,6 +54,8 @@ searchButtonEl.addEventListener('click', getRecipeSearchApi);
 
 var recipeCardContainerEl = document.querySelector(".recipe-card-container");
 var recipeCardEl = document.querySelectorAll(".recipe-card");
+var saveRecipeContainerEl = document.querySelector("#saved-recipes");
+
 //function to display the fivedayforecast 
 function displaySummaryRecipeCards(repos){
 
@@ -262,56 +264,56 @@ function displayChosenRecipeCard(repos, recipeIndex) {
     recipeCardEl[recipeIndex].appendChild(baseInfoContainerEl);
     recipeCardEl[recipeIndex].appendChild(imageContainerEl);
     recipeCardEl[recipeIndex].appendChild(nutritionInfoCardEl);
+
+    saveThisRecipeEl.addEventListener("click", function(){
+        var recipeTitleStorage = JSON.parse(localStorage.getItem("recipeTitle")) || [];
+        var recipeUrlStorage = JSON.parse(localStorage.getItem("recipeUrl")) || [];
+    
+        if(!recipeUrlStorage.includes(recipeUrl)){
+            recipeTitleStorage.push(recipeTitle);
+            recipeUrlStorage.push(recipeUrl)
+            var recipeTitleHistoryEl = document.createElement("button");
+            var recipeUrlEl = document.createElement("a");
+            recipeUrlEl.href = recipeUrl;
+            recipeTitleHistoryEl.appendChild(recipeUrlEl);
+            recipeTitleHistoryEl.textContent = recipeTitle;
+            //classes that the button needs?
+            recipeTitleHistoryEl.classList = "uk-button uk-button-default";
+            saveRecipeContainerEl.appendChild(recipeTitleHistoryEl);
+        } else {
+            //Let the user know there is already a history button for a city if it was previously searched
+            alert("That recipe is already in your recents!");
+        };
+    
+        //Store the new array with any additional cities in local storage
+        localStorage.setItem("recipeTitle", JSON.stringify(recipeTitleStorage));
+        localStorage.setItem("recipeUrl", JSON.stringify(recipeUrlStorage));
+    })
 };
 
-var saveRecipeContainerEl = document.querySelector("#save-recipes");
-var saveThisRecipeButtonEl = document.querySelector(".save-recipe-button");
+//Populate the search history city buttons through page reload
+window.addEventListener("load", function(){
+    //Pull the local storage cities and store them as an array
+    var recipeUrlReload = JSON.parse(localStorage.getItem("recipeUrl")) || [];
+    var recipeTitleReload = JSON.parse(localStorage.getItem("recipeTitle")) || [];
 
-saveThisRecipeButtonEl.addEventListener("click", function(repos, recipeIndex){
-    var recipeTitleStorage = JSON.parse(localStorage.getItem("recipeTitle")) || [];
-    var recipeUrlStorage = JSON.parse(localStorage.getItem("recipeUrl")) || [];
-    var recipeTitle = repos.hits[recipeIndex].recipe.label;
-    var recipeUrl = repos.hits[recipeIndex].recipe.url;
-
-    //If the current citySubmit array doesn't contain the city entered then push it to the array and add a search history button
-    if(!recipeUrlStorage.includes(recipeUrl)){
-        recipeTitleStorage.push(recipeTitle);
-        recipeUrlStorage.push(recipeUrl)
+    //Go through each of the cities in the array and create a button with the city as a data attribute
+    for(var i=0; i<recipeUrlReload.length; i++){
         var recipeTitleHistoryEl = document.createElement("button");
         var recipeUrlEl = document.createElement("a");
-        a.href = recipeUrl;
+        recipeUrlEl.href = recipeUrlReload[i];
         recipeTitleHistoryEl.appendChild(recipeUrlEl);
-        recipeTitleHistoryEl.textContent = recipeTitle;
+        recipeTitleHistoryEl.textContent = recipeTitleReload[i];
         //classes that the button needs?
         recipeTitleHistoryEl.classList = "uk-button uk-button-default";
         //determine where the saved buttons are going
-        // searchHistoryContainerEl.appendChild(cityHistoryEl);
-    } else {
-        //Let the user know there is already a history button for a city if it was previously searched
-        alert("That recipe is already in your recents!");
+        saveRecipeContainerEl.appendChild(recipeTitleHistoryEl);
     };
-
-    //Store the new array with any additional cities in local storage
-    localStorage.setItem("recipeTitle", JSON.stringify(recipeTitleStorage));
-    localStorage.setItem("recipeUrl", JSON.stringify(recipeUrlStorage));
 })
 
-// //Populate the search history city buttons through page reload
-// window.addEventListener("load", function(){
-//     //Pull the local storage cities and store them as an array
-//     var recipeUrlReload = JSON.parse(localStorage.getItem("recipeUrl")) || [];
-//     var recipeTitleReload = JSON.parse(localStorage.getItem("recipeTitle")) || [];
-
-//     //Go through each of the cities in the array and create a button with the city as a data attribute
-//     for(var i=0; i<recipeUrlReload.length; i++){
-//         var recipeTitleHistoryEl = document.createElement("button");
-//         var recipeUrlEl = document.createElement("a");
-//         a.href = recipeUrlReload[i];
-//         recipeTitleHistoryEl.appendChild(recipeUrlEl);
-//         recipeTitleHistoryEl.textContent = recipeTitleReload[i];
-//         //classes that the button needs?
-//         recipeTitleHistoryEl.classList = "uk-button uk-button-default";
-//         //determine where the saved buttons are going
-//         // searchHistoryContainerEl.appendChild(cityHistoryEl);
-//     };
-// })
+var clearRecipeHistoryEl = document.querySelector(".clear-recipe-history");
+clearRecipeHistoryEl.addEventListener("click", function(event){
+    event.preventDefault();
+    localStorage.clear();
+    window.location.reload();
+});
