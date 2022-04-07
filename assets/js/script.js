@@ -1,3 +1,4 @@
+
 var searchButtonEl = document.getElementById("search-button");
 var searchTermEl = document.getElementById("keyword-text") //e.g Chicken
 var recipeSearchAppID = "d2a0908b";
@@ -54,7 +55,7 @@ var recipeCardEl = document.querySelectorAll(".recipe-card");
 //function to display the fivedayforecast 
 function displaySummaryRecipeCards(repos){
 
-    //Clear out five day forecast cards
+    //Clear out five recipe cards
     for(var i=0; i<recipeCardEl.length; i++){
         recipeCardEl[i].innerHTML = "";
     };
@@ -65,8 +66,6 @@ function displaySummaryRecipeCards(repos){
         return;
     };
 
-    //Starting at index 1 within the daily weather portion of the repository because index 0 is the current weather which is already displayed above
-    //Run through index 6 to get 5 days of weather
     for(var i=0; i<5; i++){
 
         //Gather all the necessary information for the recipe cards
@@ -120,7 +119,6 @@ function displaySummaryRecipeCards(repos){
         recipeCardEl[i].appendChild(baseInfoContainerEl);
         recipeCardEl[i].appendChild(macroInfoContainerEl);
         recipeCardEl[i].appendChild(imageContainerEl);
-
     }
 
 };
@@ -131,5 +129,174 @@ recipeCardContainerEl.addEventListener("click", function(event){
 });
 
 function displayChosenRecipeCard(recipeIndex) {
+    //Gather all the necessary information for the recipe cards
+    //Gather recipe title
+    var recipeTitle = repos.hits[recipeIndex].recipe.label;
+    //Number of servings the recipe makes
+    var numberOfServings =  repos.hits[recipeIndex].recipe.yield + " Servings";
+    //Number of kcal in the recipe
+    var kcalCount = repos.hits[recipeIndex].recipe.calories.toFixed(1) + " kcal";
+    //Protein amount in grams
+    var proteinAmount = "Protein: " + repos.hits[recipeIndex].recipe.totalNutrients.PROCNT.quantity.toFixed(1) + " g";
+    var fatAmount = "Fat: " + repos.hits[recipeIndex].recipe.totalNutrients.FAT.quantity.toFixed(1) + " g";
+    var carbAmount = "Carb: " + repos.hits[recipeIndex].recipe.totalNutrients.CHOCDF.quantity.toFixed(1) + " g";
+    var imagePath = repos.hits[recipeIndex].recipe.image;
+    var recipeUrl = repos.hits[recipeIndex].recipe.url;
+    var recipeLength = repos.hits[recipeIndex].recipe.ingredientLines;
+    var ingredientListEl = document.createElement('ul');
 
+    //Create the child elements for the base information div
+    var baseInfoContainerEl = document.createElement('div');
+    baseInfoContainerEl.classList.add("recipe-card-info");
+    var recipeTitleEl = document.createElement('h3');
+    var numberOfServingsEl = document.createElement('p');
+    var kcalCountEl = document.createElement('p');
+    var proteinAmountEl = document.createElement('p');
+    var fatAmountEl = document.createElement('p');
+    var carbAmountEl = document.createElement('p');
+    var ingredientListHeaderEl = document.createElement('h3');
+    //Loop through ingredient list and pull
+    for(var i=0; i<recipeLength; i++){
+        var ingredientListItemEl = document.createElement('li');
+        ingredientListItemEl.textContent = recipeLength[i];
+        ingredientListEl.appendChild(ingredientListItemEl);
+    };
+
+    var shoppingList = repos.hits[recipeIndex].recipe.ingredients
+    var shoppingListHeaderEl = document.createElement('h3');
+    shoppingListHeaderEl.textContent = "Possible Shopping List";
+    var shoppingListEl = document.createElement('ul');
+    for(var i=0; i < shoppingList.length; i++){
+        var shoppingListItemsEl = document.createElement('li');
+        shoppingListItemsEl.textContent = shoppingList[i].food;
+        shoppingListEl.appendChild(shoppingListItemsEl);        
+    };
+
+    var imageContainerEl = document.createElement('img');
+    imageContainerEl.classList.add("recipe-card-info");
+    var saveThisRecipeEl = document.createElement('button');
+
+    //Apply the text content using the gathered information and child elements
+    recipeTitleEl.textContent = recipeTitle;
+    numberOfServingsEl.textContent = numberOfServings;
+    kcalCountEl.textContent = kcalCount;
+    proteinAmountEl.textContent = proteinAmount;
+    fatAmountEl.textContent = fatAmount;
+    carbAmountEl.textContent = carbAmount;
+    ingredientListHeaderEl.textContent = "Ingredient List";
+    saveThisRecipeEl.textContent = "Save This Recipe!";
+
+    imageContainerEl.setAttribute("src", imagePath);
+
+    //Appending Children to the base information
+    baseInfoContainerEl.appendChild(recipeTitleEl);
+    baseInfoContainerEl.appendChild(proteinAmountEl);
+    baseInfoContainerEl.appendChild(fatAmountEl);
+    baseInfoContainerEl.appendChild(carbAmountEl);
+    baseInfoContainerEl.appendChild(ingredientListHeaderEl);
+    baseInfoContainerEl.appendChild(ingredientListEl);
+    baseInfoContainerEl.appendChild(shoppingListEl);
+    baseInfoContainerEl.appendChild(shoppingListHeaderEl);
+    baseInfoContainerEl.appendChild(saveThisRecipeEl);
+
+    //Nutrition Information Card Elements
+
+    var nutritionInfoCardEl = document.createElement('div');
+    var nutritionInfoCardHeaderEl = document.createElement('h4');
+    var nutritionNumberOfServingsEl = document.createElement('p');
+    var amountPerServingHeaderEl = document.createElement('p');
+    var nutritionCaloriesEl = document.createElement('p')
+    var percentDailyValueEl = document.createElement('p');
+    var nutritionFatEl = document.createElement('p');
+    var nutritionCholesterolEl = document.createElement('p');
+    var nutritionSodiumEl = document.createElement('p');
+    var nutritionCarbEl = document.createElement('p');
+    var nutritionFiberEl = document.createElement('p');
+    var nutritionSugarsEl = document.createElement('p');
+    var nutritionProteinEl = document.createElement('p');
+    var disclaimerEl = document.createElement('p');
+
+    //variables that pull
+
+    //Text content of each of the new elements
+    nutritionInfoCardHeaderEl.textContent = "Nutrition Facts";
+    nutritionNumberOfServingsEl.textContent = numberOfServings + " servings per recipe";
+    amountPerServingHeaderEl.textContent = "Amount Per Serving";
+    nutritionCaloriesEl.textContent = "Calories " + kcalCount;
+    percentDailyValueEl.textContent = "% Daily Value*";
+    nutritionFatEl.textContent = "Total Fat " + fatAmount + "g" + " " + repos.hit[recipeIndex].recipe + "%";
+    nutritionCholesterolEl.textContent = "Cholesterol " + cholesterol + "mg" + cholesterol + "%";
+    nutritionSodiumEl.textContent = "Sodium " + sodium + "mg" + sodium + "%";
+    nutritionCarbEl.textContent = "Total Carb " + carbAmount + "g" + carb + "%";
+    nutritionFiberEl.textContent = "Dietary Fiber " + fiber + "g" + fiber + "%";
+    nutritionSugarsEl.textContent = "Total Sugars " + sugars + "g" + sugars + "%";
+    nutritionProteinEl.textContent = "Protein " + proteinAmount + "g" + protein + "%";
+    disclaimerEl.textContent = "*Percent Daily Values are based on 2000 calorie diet";
+
+    nutritionInfoCardEl.appendChild(nutritionInfoCardHeaderEl);
+    nutritionInfoCardEl.appendChild(nutritionNumberOfServingsEl);
+    nutritionInfoCardEl.appendChild(amountPerServingHeaderEl);
+    nutritionInfoCardEl.appendChild(nutritionCaloriesEl);
+    nutritionInfoCardEl.appendChild(percentDailyValueEl);
+    nutritionInfoCardEl.appendChild(nutritionFatEl);
+    nutritionInfoCardEl.appendChild(nutritionCholesterolEl);
+    nutritionInfoCardEl.appendChild(nutritionSodiumEl);
+    nutritionInfoCardEl.appendChild(nutritionCarbEl);
+    nutritionInfoCardEl.appendChild(nutritionFiberEl);
+    nutritionInfoCardEl.appendChild(nutritionSugarsEl);
+    nutritionInfoCardEl.appendChild(nutritionProteinEl);
+    nutritionInfoCardEl.appendChild(disclaimerEl);
+
+    saveThisRecipeEl.addEventListener("click", function(event){
+        localStorage(recipeIndex);
+    })
+};
+
+function localStorage(recipeIndex) {
+    var recipeTitleStorage = JSON.parse(localStorage.getItem("recipeTitle")) || [];
+    var recipeUrlStorage = JSON.parse(localStorage.getItem("recipeUrl")) || [];
+    var recipeTitle = repos.hits[recipeIndex].recipe.label;
+    var recipeUrl = repos.hits[recipeIndex].recipe.url;
+
+    //If the current citySubmit array doesn't contain the city entered then push it to the array and add a search history button
+    if(!recipeUrlStorage.includes(recipeUrl)){
+        recipeTitleStorage.push(recipeTitle);
+        recipeUrlStorage.push(recipeUrl)
+        var recipeTitleHistoryEl = document.createElement("button");
+        var recipeUrlEl = document.createElement("a");
+        a.href = recipeUrl;
+        recipeTitleHistoryEl.appendChild(recipeUrlEl);
+        recipeTitleHistoryEl.textContent = recipeTitle;
+        //classes that the button needs?
+        recipeTitleHistoryEl.classList = "uk-button uk-button-default";
+        //determine where the saved buttons are going
+        // searchHistoryContainerEl.appendChild(cityHistoryEl);
+    } else {
+        //Let the user know there is already a history button for a city if it was previously searched
+        alert("That recipe is already in your recents!");
+    };
+
+    //Store the new array with any additional cities in local storage
+    localStorage.setItem("recipeTitle", JSON.stringify(recipeTitleStorage));
+    localStorage.setItem("recipeUrl", JSON.stringify(recipeUrlStorage));
 }
+
+//Populate the search history city buttons through page reload
+window.addEventListener("load", function(){
+    //Pull the local storage cities and store them as an array
+    var recipeUrlReload = JSON.parse(localStorage.getItem("recipeUrl")) || [];
+    var recipeTitleReload = JSON.parse(localStorage.getItem("recipeTitle")) || [];
+
+    //Go through each of the cities in the array and create a button with the city as a data attribute
+    for(var i=0; i<recipeUrlReload.length; i++){
+        var recipeTitleHistoryEl = document.createElement("button");
+        var recipeUrlEl = document.createElement("a");
+        a.href = recipeUrlReload[i];
+        recipeTitleHistoryEl.appendChild(recipeUrlEl);
+        recipeTitleHistoryEl.textContent = recipeTitleReload[i];
+        //classes that the button needs?
+        recipeTitleHistoryEl.classList = "uk-button uk-button-default";
+        //determine where the saved buttons are going
+        // searchHistoryContainerEl.appendChild(cityHistoryEl);
+    };
+})
