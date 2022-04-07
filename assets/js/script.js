@@ -9,7 +9,7 @@ var healthLabelEl = document.getElementById("health-label"); //e.g alcohol free,
 var cuisineTypeEl = document.getElementById("cuisine-type");//asian, american etc.
 var mealTypeEl = document.getElementById("meal-type"); //dinner, lunch etc.
 
-
+var repos;
 function getRecipeSearchApi(event) {
     //Use this when submitting form so that it prevents a full page refresh which clears the console.
     event.preventDefault();
@@ -28,27 +28,29 @@ function getRecipeSearchApi(event) {
       return response.json();
     }) 
     .then(function(data) {
+        repos = data;
         console.log(data);
         var recipeSearchFoodID = "" //TODO change to actual Food ID
         var recipeSearchUri = "" //TODO change to actual URI
-        getRecipeNutritionApi(recipeSearchFoodID,recipeSearchUri);
-
+        // getRecipeNutritionApi(recipeSearchFoodID,recipeSearchUri);
+        displaySummaryRecipeCards(data);
     })  
 }
 
 searchButtonEl.addEventListener('click', getRecipeSearchApi);
 
-function getRecipeNutritionApi(recipeSearchFoodID,recipeSearchUri) {
-  var getRecipeNutritionApi = `https://api.edamam.com/api/nutrition-details?app_id=${recipeNutritionAppID}&app_key=${recipeNutritionAppKey}`;
-  fetch(getRecipeNutritionApi)
-  .then(function (response) {
-      return response.json();
-  })
-  .then(function(data) {
-    console.log(data); 
+// function getRecipeNutritionApi(recipeSearchFoodID,recipeSearchUri) {
+//   var getRecipeNutritionApi = `https://api.edamam.com/api/nutrition-details?app_id=${recipeNutritionAppID}&app_key=${recipeNutritionAppKey}`;
+//   fetch(getRecipeNutritionApi)
+//   .then(function (response) {
+//       return response.json();
+//   })
+//   .then(function(data) {
+//     console.log(data);
 
-  });
-}
+
+//   });
+// }
 
 var recipeCardContainerEl = document.querySelector(".recipe-card-container");
 var recipeCardEl = document.querySelectorAll(".recipe-card");
@@ -58,6 +60,7 @@ function displaySummaryRecipeCards(repos){
     //Clear out five recipe cards
     for(var i=0; i<recipeCardEl.length; i++){
         recipeCardEl[i].innerHTML = "";
+        recipeCardEl[i].setAttribute("data-index", i);
     };
 
     //if there are no repos found then display text to reflect
@@ -119,27 +122,33 @@ function displaySummaryRecipeCards(repos){
         recipeCardEl[i].appendChild(baseInfoContainerEl);
         recipeCardEl[i].appendChild(macroInfoContainerEl);
         recipeCardEl[i].appendChild(imageContainerEl);
+        baseInfoContainerEl.setAttribute("data-index", i);
+        macroInfoContainerEl.setAttribute("data-index", i);
+        imageContainerEl.setAttribute("data-index", i);
+
     }
 
 };
 
 recipeCardContainerEl.addEventListener("click", function(event){
     var recipeIndex = event.target.getAttribute("data-index");
-    displayChosenRecipeCard(recipeIndex);
+    console.log(recipeIndex);
+    // getRecipeSearchApi(event);
+    displayChosenRecipeCard(repos, recipeIndex);
 });
 
-function displayChosenRecipeCard(recipeIndex) {
+function displayChosenRecipeCard(repos, recipeIndex) {
     //Gather all the necessary information for the recipe cards
     //Gather recipe title
     var recipeTitle = repos.hits[recipeIndex].recipe.label;
     //Number of servings the recipe makes
-    var numberOfServings =  repos.hits[recipeIndex].recipe.yield + " Servings";
+    var numberOfServings =  repos.hits[recipeIndex].recipe.yield;
     //Number of kcal in the recipe
-    var kcalCount = repos.hits[recipeIndex].recipe.calories.toFixed(1) + " kcal";
+    var kcalCount = repos.hits[recipeIndex].recipe.calories.toFixed(1);
     //Protein amount in grams
-    var proteinAmount = "Protein: " + repos.hits[recipeIndex].recipe.totalNutrients.PROCNT.quantity.toFixed(1) + " g";
-    var fatAmount = "Fat: " + repos.hits[recipeIndex].recipe.totalNutrients.FAT.quantity.toFixed(1) + " g";
-    var carbAmount = "Carb: " + repos.hits[recipeIndex].recipe.totalNutrients.CHOCDF.quantity.toFixed(1) + " g";
+    var proteinAmount = repos.hits[recipeIndex].recipe.totalNutrients.PROCNT.quantity.toFixed(1);
+    var fatAmount = repos.hits[recipeIndex].recipe.totalNutrients.FAT.quantity.toFixed(1);
+    var carbAmount = repos.hits[recipeIndex].recipe.totalNutrients.CHOCDF.quantity.toFixed(1);
     var imagePath = repos.hits[recipeIndex].recipe.image;
     var recipeUrl = repos.hits[recipeIndex].recipe.url;
     var recipeLength = repos.hits[recipeIndex].recipe.ingredientLines;
@@ -155,14 +164,15 @@ function displayChosenRecipeCard(recipeIndex) {
     var fatAmountEl = document.createElement('p');
     var carbAmountEl = document.createElement('p');
     var ingredientListHeaderEl = document.createElement('h3');
+
     //Loop through ingredient list and pull
-    for(var i=0; i<recipeLength; i++){
+    for(var i=0; i<recipeLength.length; i++){
         var ingredientListItemEl = document.createElement('li');
         ingredientListItemEl.textContent = recipeLength[i];
         ingredientListEl.appendChild(ingredientListItemEl);
     };
 
-    var shoppingList = repos.hits[recipeIndex].recipe.ingredients
+    var shoppingList = repos.hits[recipeIndex].recipe.ingredients;
     var shoppingListHeaderEl = document.createElement('h3');
     shoppingListHeaderEl.textContent = "Possible Shopping List";
     var shoppingListEl = document.createElement('ul');
@@ -175,14 +185,15 @@ function displayChosenRecipeCard(recipeIndex) {
     var imageContainerEl = document.createElement('img');
     imageContainerEl.classList.add("recipe-card-info");
     var saveThisRecipeEl = document.createElement('button');
+    saveThisRecipeEl.setAttribute("data-index", recipeIndex);
 
     //Apply the text content using the gathered information and child elements
     recipeTitleEl.textContent = recipeTitle;
-    numberOfServingsEl.textContent = numberOfServings;
-    kcalCountEl.textContent = kcalCount;
-    proteinAmountEl.textContent = proteinAmount;
-    fatAmountEl.textContent = fatAmount;
-    carbAmountEl.textContent = carbAmount;
+    numberOfServingsEl.textContent = numberOfServings + " Servings";
+    kcalCountEl.textContent = kcalCount + " kcal";
+    proteinAmountEl.textContent = "Protein: " + proteinAmount + " g";
+    fatAmountEl.textContent = "Fat: " + fatAmount + " g";
+    carbAmountEl.textContent = "Carb: " + carbAmount + " g";
     ingredientListHeaderEl.textContent = "Ingredient List";
     saveThisRecipeEl.textContent = "Save This Recipe!";
 
@@ -195,8 +206,8 @@ function displayChosenRecipeCard(recipeIndex) {
     baseInfoContainerEl.appendChild(carbAmountEl);
     baseInfoContainerEl.appendChild(ingredientListHeaderEl);
     baseInfoContainerEl.appendChild(ingredientListEl);
-    baseInfoContainerEl.appendChild(shoppingListEl);
     baseInfoContainerEl.appendChild(shoppingListHeaderEl);
+    baseInfoContainerEl.appendChild(shoppingListEl);
     baseInfoContainerEl.appendChild(saveThisRecipeEl);
 
     //Nutrition Information Card Elements
@@ -224,13 +235,13 @@ function displayChosenRecipeCard(recipeIndex) {
     amountPerServingHeaderEl.textContent = "Amount Per Serving";
     nutritionCaloriesEl.textContent = "Calories " + kcalCount;
     percentDailyValueEl.textContent = "% Daily Value*";
-    nutritionFatEl.textContent = "Total Fat " + fatAmount + "g" + " " + repos.hit[recipeIndex].recipe + "%";
-    nutritionCholesterolEl.textContent = "Cholesterol " + cholesterol + "mg" + cholesterol + "%";
-    nutritionSodiumEl.textContent = "Sodium " + sodium + "mg" + sodium + "%";
-    nutritionCarbEl.textContent = "Total Carb " + carbAmount + "g" + carb + "%";
-    nutritionFiberEl.textContent = "Dietary Fiber " + fiber + "g" + fiber + "%";
-    nutritionSugarsEl.textContent = "Total Sugars " + sugars + "g" + sugars + "%";
-    nutritionProteinEl.textContent = "Protein " + proteinAmount + "g" + protein + "%";
+    nutritionFatEl.textContent = "Total Fat " + fatAmount + "g" + " " + repos.hits[recipeIndex].recipe.totalDaily.FAT.quantity.toFixed(1) + "%";
+    nutritionCholesterolEl.textContent = "Cholesterol " + repos.hits[recipeIndex].recipe.totalNutrients.CHOLE.quantity.toFixed(1) + " mg" + " " + repos.hits[recipeIndex].recipe.totalDaily.CHOLE.quantity.toFixed(1) + "%";
+    nutritionSodiumEl.textContent = "Sodium " + repos.hits[recipeIndex].recipe.totalNutrients.NA.quantity.toFixed(1) + " mg" +  " " + repos.hits[recipeIndex].recipe.totalDaily.NA.quantity.toFixed(1) + "%";
+    nutritionCarbEl.textContent = "Total Carb " + carbAmount + " g" + " " + repos.hits[recipeIndex].recipe.totalDaily.CHOCDF.quantity.toFixed(1) + "%";
+    nutritionFiberEl.textContent = "Dietary Fiber " + repos.hits[recipeIndex].recipe.totalNutrients.FIBTG.quantity.toFixed(1) + " g" + " " + repos.hits[recipeIndex].recipe.totalDaily.FIBTG.quantity.toFixed(1) + "%";
+    nutritionSugarsEl.textContent = "Total Sugars " + repos.hits[recipeIndex].recipe.totalNutrients.SUGAR.quantity.toFixed(2) + " g";
+    nutritionProteinEl.textContent = "Protein " + proteinAmount + " g" + " " + repos.hits[recipeIndex].recipe.totalDaily.PROCNT.quantity.toFixed(1) + "%";
     disclaimerEl.textContent = "*Percent Daily Values are based on 2000 calorie diet";
 
     nutritionInfoCardEl.appendChild(nutritionInfoCardHeaderEl);
@@ -247,12 +258,16 @@ function displayChosenRecipeCard(recipeIndex) {
     nutritionInfoCardEl.appendChild(nutritionProteinEl);
     nutritionInfoCardEl.appendChild(disclaimerEl);
 
-    saveThisRecipeEl.addEventListener("click", function(event){
-        localStorage(recipeIndex);
-    })
+    recipeCardEl[recipeIndex].innerHTML = "";
+    recipeCardEl[recipeIndex].appendChild(baseInfoContainerEl);
+    recipeCardEl[recipeIndex].appendChild(imageContainerEl);
+    recipeCardEl[recipeIndex].appendChild(nutritionInfoCardEl);
 };
 
-function localStorage(recipeIndex) {
+var saveRecipeContainerEl = document.querySelector("#save-recipes");
+var saveThisRecipeButtonEl = document.querySelector(".save-recipe-button");
+
+saveThisRecipeButtonEl.addEventListener("click", function(repos, recipeIndex){
     var recipeTitleStorage = JSON.parse(localStorage.getItem("recipeTitle")) || [];
     var recipeUrlStorage = JSON.parse(localStorage.getItem("recipeUrl")) || [];
     var recipeTitle = repos.hits[recipeIndex].recipe.label;
@@ -279,24 +294,24 @@ function localStorage(recipeIndex) {
     //Store the new array with any additional cities in local storage
     localStorage.setItem("recipeTitle", JSON.stringify(recipeTitleStorage));
     localStorage.setItem("recipeUrl", JSON.stringify(recipeUrlStorage));
-}
-
-//Populate the search history city buttons through page reload
-window.addEventListener("load", function(){
-    //Pull the local storage cities and store them as an array
-    var recipeUrlReload = JSON.parse(localStorage.getItem("recipeUrl")) || [];
-    var recipeTitleReload = JSON.parse(localStorage.getItem("recipeTitle")) || [];
-
-    //Go through each of the cities in the array and create a button with the city as a data attribute
-    for(var i=0; i<recipeUrlReload.length; i++){
-        var recipeTitleHistoryEl = document.createElement("button");
-        var recipeUrlEl = document.createElement("a");
-        a.href = recipeUrlReload[i];
-        recipeTitleHistoryEl.appendChild(recipeUrlEl);
-        recipeTitleHistoryEl.textContent = recipeTitleReload[i];
-        //classes that the button needs?
-        recipeTitleHistoryEl.classList = "uk-button uk-button-default";
-        //determine where the saved buttons are going
-        // searchHistoryContainerEl.appendChild(cityHistoryEl);
-    };
 })
+
+// //Populate the search history city buttons through page reload
+// window.addEventListener("load", function(){
+//     //Pull the local storage cities and store them as an array
+//     var recipeUrlReload = JSON.parse(localStorage.getItem("recipeUrl")) || [];
+//     var recipeTitleReload = JSON.parse(localStorage.getItem("recipeTitle")) || [];
+
+//     //Go through each of the cities in the array and create a button with the city as a data attribute
+//     for(var i=0; i<recipeUrlReload.length; i++){
+//         var recipeTitleHistoryEl = document.createElement("button");
+//         var recipeUrlEl = document.createElement("a");
+//         a.href = recipeUrlReload[i];
+//         recipeTitleHistoryEl.appendChild(recipeUrlEl);
+//         recipeTitleHistoryEl.textContent = recipeTitleReload[i];
+//         //classes that the button needs?
+//         recipeTitleHistoryEl.classList = "uk-button uk-button-default";
+//         //determine where the saved buttons are going
+//         // searchHistoryContainerEl.appendChild(cityHistoryEl);
+//     };
+// })

@@ -35,7 +35,7 @@
                             <option value="egg-free">Eggs</option>
                             <option value="fish-free">Fish</option>
                             <option value="fodmap-free">FODMAP-Free</option>
-                            <option value="gluten-free">Gluten</option>
+                            <option value="gluten-free">Gluten-Free</option>
                             <option value="keto-friendly">Keto</option>
                             <option value="kidney-friendly">Kidney Friendly</option>
                             <option value="kosher">Kosher</option>
@@ -93,7 +93,7 @@
                             <option value="Teatime">Teatime</option>
                         </select>
                         
-                        <input type="submit" class="uk-button uk-button-default custom-submit" value="Feed Me!"/>
+                        <input type="submit" class="uk-button uk-button-default custom-submit" id = "search-button" value="Feed Me!"/>
                     </form>
                 </div>
             </div>
@@ -106,6 +106,8 @@
             <div class="uk-grid uk-grid-medium uk-height-1-1">
 
                 <div class="uk-width-1-4@m custom-side uk-visible@m">
+                    <div class="saved-recipe-container" id="saved-recipes"></div>
+                    <button class="save-recipe-button">Save this Recipe!</button>
                     <p>Decorative Sidebar</p>
                 </div>
                 <!--Need to update the sizing of all of the content to fit the new input changes, etc.-->
