@@ -21,27 +21,128 @@
                     <h1 class="custom-logo">My Grandma's Recipe Box!</h1>
                 </div>
 
-                <div class="uk-navbar-item uk-navbar-right">
-                    <form id="food-search" class="uk-form-horizontal">
-                        <input id="keyword-text" type="text" class="uk-input form-horizontal-text" placeholder="Keywords">
-                        <div class="uk-button-group">
-                            <button id="health-label" class="uk-button uk-button-default">Health Label</button>
-                            <button id="cuisine-type" class="uk-button uk-button-default">Cuisine Type</button>
-                            <button id="meal-type" class="uk-button uk-button-default">Meal Type</button>
-                            <button id="search-button" class="uk-button uk-button-default">Feed Me!</button>
-                        </div>
+                <div class="uk-navbar-item">
+                    <form id="food-search" class="custom-form">
+                        <input id="keyword-text" type="text" class="uk-input form-horizontal-text" placeholder="Keywords" required>
+                        <label for="health-label">Health Label</label>
+                        <select id="health-label" class="uk-select" name="health-label">
+                            <option value="" disabled selected>Select a restriction</option>
+                            <option value="alcohol-free">Alcohol-Free</option>
+                            <option value="immune-supportive">Immune-Supportive</option>
+                            <option value="celery-free">Celery-Free</option>
+                            <option value="crustacean-free">Crustacean-Free</option>
+                            <option value="dairy-free">Dairy</option>
+                            <option value="egg-free">Eggs</option>
+                            <option value="fish-free">Fish</option>
+                            <option value="fodmap-free">FODMAP-Free</option>
+                            <option value="gluten-free">Gluten</option>
+                            <option value="keto-friendly">Keto</option>
+                            <option value="kidney-friendly">Kidney Friendly</option>
+                            <option value="kosher">Kosher</option>
+                            <option value="low-potassium">Low Potassium</option>
+                            <option value="lupine-free">Lupine-Free</option>
+                            <option value="mustard-free">Mustard-Free</option>
+                            <option value="low-fat-abs">Low Fat</option>
+                            <option value="No-oil-added">No Oils Added</option>
+                            <option value="low-sugar">No Sugar</option>
+                            <option value="paleo">Paleo</option>
+                            <option value="peanut-free">Peanuts</option>
+                            <option value="pescatarian">Pescatarian</option>
+                            <option value="pork-free">Pork-Free</option>
+                            <option value="red-meat-free">Red Meat-Free</option>
+                            <option value="sesame-free">Sesame-Free</option>
+                            <option value="shellfish-free">Shellfish</option>
+                            <option value="soy-free">Soy</option>
+                            <option value="sugar-conscious">Low Sugar</option>
+                            <option value="tree-nut-free">Tree Nuts</option>
+                            <option value="vegan">Vegan</option>
+                            <option value="vegetarian">Vegetarian</option>
+                            <option value="wheat-free">Wheat-Free</option>
+                        </select>
+
+                        <label for="cuisine-type">Cuisine Type</label>
+                        <select id="cuisine-type" class="uk-select" name="cuisine-type">
+                            <option value="" disabled selected>Select a region</option>
+                            <option value="American">American</option>
+                            <option value="Asian">Asian</option>
+                            <option value="British">British</option>
+                            <option value="Caribbean">Caribbean</option>
+                            <option value="Central Europe">Central Europe</option>
+                            <option value="Chinese">Chinese</option>
+                            <option value="Eastern Europe">Eastern Europe</option>
+                            <option value="French">French</option>
+                            <option value="Indian">Indian</option>
+                            <option value="Italian">Italian</option>
+                            <option value="Japanese">Japanese</option>
+                            <option value="Kosher">Kosher</option>
+                            <option value="Mediterranean">Mediterranean</option>
+                            <option value="Mexican">Mexican</option>
+                            <option value="Middle Eastern">Middle Eastern</option>
+                            <option value="Nordic">Nordic</option>
+                            <option value="South American">South American</option>
+                            <option value="South East Asian">South East Asian</option>
+                        </select>
+
+                        <label for="meal-type">Meal Type</label>
+                        <select id="meal-type" class="uk-select" name="meal-type" required>
+                            <option value="" disabled selected>Select a meal</option>
+                            <option value="Breakfast">Breakfast</option>
+                            <option value="Lunch">Lunch</option>
+                            <option value="Dinner">Dinner</option>
+                            <option value="Snack">Snack</option>
+                            <option value="Teatime">Teatime</option>
+                        </select>
+                        
+                        <input type="submit" class="uk-button uk-button-default custom-submit" value="Feed Me!"/>
                     </form>
                 </div>
             </div>
 
+            <!--<div class="uk-position-z-index custom-comment uk-position-absolute uk-position-center" uk-alert>
+                <a class="uk-alert-close" uk-close></a>
+                <p>Welcome! Find yourself a healthy and easy recipe for your next meal.</p>
+            </div>-->
+
             <div class="uk-grid uk-grid-medium uk-height-1-1">
-                <div class="uk-width-1-4 custom-side">
-                    <p>SS</p>
+
+                <div class="uk-width-1-4@m custom-side uk-visible@m">
+                    <p>Decorative Sidebar</p>
+                </div>
+                <!--Need to update the sizing of all of the content to fit the new input changes, etc.-->
+                <div class="uk-width-3-4@m">
+                    <div id="recipe-container" class="uk-container recipe-card-container">
+                        <div class="uk-card custom-card">
+                            <div class="uk-card-body recipe-card">
+                            
+                            </div>
+                        </div>
+
+                        <div class="uk-card custom-card">
+                            <div class="uk-card-body recipe-card">
+                                
+                            </div>
+                        </div>
+                        
+                        <div class="uk-card custom-card">
+                            <div class="uk-card-body recipe-card">
+                            
+                            </div>
+                        </div>
+
+                        <div class="uk-card custom-card">
+                            <div class="uk-card-body recipe-card">
+                                
+                            </div>
+                        </div>
+
+                        <div class="uk-card custom-card">
+                            <div class="uk-card-body recipe-card">
+                                
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="uk-container uk-width-3-4">
-                    <h3>Welcome! Find yourself a healthy and easy recipe for your next meal.</h3>
-                </div>
             </div>
         </div>
     </body>
