@@ -10,6 +10,7 @@ var recipeAutoCompleteAppKey = "8d9d3621066e7717beeb5e70e9967500";
 var healthLabelEl = document.getElementById("health-label"); //e.g alcohol free, celery free etc.
 var cuisineTypeEl = document.getElementById("cuisine-type");//asian, american etc.
 var mealTypeEl = document.getElementById("meal-type"); //dinner, lunch etc.
+var ingredientEl = document.getElementById("ingredient");
 
 var repos;
 function getRecipeSearchApi(event) {
@@ -50,6 +51,19 @@ function getRecipeAutoCompleteApi() {
   .then(function(data) {
     console.log(data); 
     //postion absolute to fix the box then display the box under form/display as a list/display box z-index
+    
+    ingredientEl.replaceChildren();
+
+    data.forEach(function(ingredient) {
+
+        var ingredientValue = document.createElement('option');
+        //ingredientEl.setAttribute("class", "visible");
+        ingredientValue.setAttribute("value", ingredient);
+        ingredientValue.innerText = ingredient;
+        ingredientEl.appendChild(ingredientValue);
+
+    })
+
   });
 }
 

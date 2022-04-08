@@ -22,8 +22,11 @@
                 </div>
 
                 <div class="uk-navbar-item">
-                    <form id="food-search" class="custom-form">
+                    <form id="food-search" class="custom-form uk-autocomplete uk-form">
                         <input id="keyword-text" type="text" class="uk-input form-horizontal-text" placeholder="Keywords" required>
+
+                        <datalist id="ingredient"></datalist>
+
                         <label for="health-label">Health Label</label>
                         <select id="health-label" class="uk-select" name="health-label" required>
                             <option value="" disabled selected>Select a restriction</option>
