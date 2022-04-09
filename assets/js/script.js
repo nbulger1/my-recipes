@@ -1,4 +1,3 @@
-
 var searchButtonEl = document.getElementById("search-button");
 var searchTermEl = document.getElementById("keyword-text") //e.g Chicken
 var recipeSearchAppID = "d2a0908b";
@@ -11,7 +10,9 @@ var mealTypeEl = document.getElementById("meal-type"); //dinner, lunch etc.
 var ingredientEl = document.getElementById("ingredient");
 
 var repos;
-var isloading = true;
+var isLoading = true; 
+var isError = false; //Validation built in to return an error response
+
 function getRecipeSearchApi(event) {
     //Use this when submitting form so that it prevents a full page refresh which clears the console.
     event.preventDefault();
@@ -23,46 +24,47 @@ function getRecipeSearchApi(event) {
 
     recipeSearchUrl = `https://api.edamam.com/api/recipes/v2?type=public&q=${searchTermValue}&app_id=${recipeSearchAppID}&app_key=${recipeSearchAppKey}&health=${healthLabelValue}&cuisineType=${cuisineTypeValue}&mealType=${mealTypeValue}&imageSize=REGULAR`
 
-    isloading = true;
-    if(isloading){
-        var isloadingEl = document.createElement('div');
-        isloadingEl.textContent = "I'm loading! Please wait!";
-        recipeCardContainerEl.appendChild(isloadingEl);
+    isLoading = true;
+    if(isLoading) {
+        var isLoadingEl = document.createElement('div');
+        isLoadingEl.textContent = "I'm loading! Please wait!";
+        recipeCardContainerEl.appendChild(isLoadingEl);
     }
     
-  fetch(recipeSearchUrl)
-    .then(function (response) {
-      return response.json();
-    }) 
-    .then(function(data) {
-        isloading = false;
-        if(isloading == false){
-            isloadingEl.innerHTML = "";
-        }
-        repos = data;
-        displaySummaryRecipeCards(data);
-    })  
-    //add a .catch :) with isloading = false, iserror
+    fetch(recipeSearchUrl)
+        .then(function (response) {
+        return response.json();
+        }) 
+        .then(function(data) {
+            isLoading = false;
+            if(isLoading == false){
+                isLoadingEl.innerHTML = "";
+            }
+            repos = data;
+            displaySummaryRecipeCards(data); 
+        })  
+        .catch(function (error) {
+            console.error('Error:', error);
+        })
 }
 
 function getRecipeAutoCompleteApi() {
-
-  var searchTermValue = searchTermEl.value.trim();
-  var recipeAutoCompleteUrl = `https://api.edamam.com/auto-complete?app_id=${recipeAutoCompleteAppID}&app_key=${recipeAutoCompleteAppKey}&q=${searchTermValue}&limit=5`;
-  fetch(recipeAutoCompleteUrl)
-  .then(function (response) {
-      return response.json();
-  })
-  .then(function(data) {
-
-    ingredientEl.replaceChildren();
-    data.forEach(function(ingredient) {
-        var ingredientValue = document.createElement('option');
-        ingredientValue.setAttribute("value", ingredient);
-        ingredientValue.innerText = ingredient;
-        ingredientEl.appendChild(ingredientValue);
-
+    var searchTermValue = searchTermEl.value.trim();
+    var recipeAutoCompleteUrl = `https://api.edamam.com/auto-complete?app_id=${recipeAutoCompleteAppID}&app_key=${recipeAutoCompleteAppKey}&q=${searchTermValue}&limit=5`;
+    fetch(recipeAutoCompleteUrl)
+    .then(function (response) {
+        return response.json();
     })
+    .then(function(data) {
+
+        ingredientEl.replaceChildren();
+        data.forEach(function(ingredient) {
+            var ingredientValue = document.createElement('option');
+            ingredientValue.setAttribute("value", ingredient);
+            ingredientValue.innerText = ingredient;
+            ingredientEl.appendChild(ingredientValue);
+
+        })
 
   });
 }
