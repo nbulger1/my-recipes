@@ -6,11 +6,58 @@
 .custom-container {
     height: 100vh;
     overflow: hidden;
+    background-color: #aaaaaa;
+    overflow-y: auto;
+    position: relative;
+}
+
+.custom-nav {
+    background: #ECC3AD;
+    box-shadow: #00C896 0 1px 0,
+    #ECC3AD 0 2px 0;
+    position: sticky;
+    top: 0;
+    z-index: 3;
+}
+
+.custom-nav::before {
+    content: "";
+    position: absolute;
+    z-index: 2;
+    width: 30px;
+    height: 30px;
+    bottom: -2px;
+    left: 0;
+    border-right: #00C896 1px solid;
+    border-top: #00C896 1px solid;
+    box-shadow: #ECC3AD -1px -1px 0 inset,
+    #ECC3AD 1px -1px 0 inset,
+    #ECC3AD -1px 1px 0 inset,
+    #00C896 -2px 2px 0 inset,
+    #00C896 2px -2px 0 inset;
+}
+
+.custom-nav::after {
+    content: "";
+    position: absolute;
+    z-index: 2;
+    width: 30px;
+    height: 30px;
+    bottom: -2px;
+    right: 0;
+    border-left: #00C896 1px solid;
+    border-top: #00C896 1px solid;
+    box-shadow: #ECC3AD -1px -1px 0 inset,
+    #ECC3AD 1px -1px 0 inset,
+    #ECC3AD -1px 1px 0 inset,
+    #00C896 -2px 2px 0 inset,
+    #00C896 2px -2px 0 inset;
 }
 
 .custom-logo {
     margin: auto 5rem;
     font-family: 'Marcellus', serif;
+    animation: slideIn .4s;
 }
 
 .custom-side {
@@ -25,8 +72,6 @@
 }
 
 .recipe-card-container {
-    background-color: rgb(189, 189, 189);
-    overflow-y: scroll;
     height: 93vh;
 }
 
@@ -34,6 +79,33 @@
     margin: 10px;
     background-color: white;
     height: auto;
+    transition: opacity .8s ease-in;
+}
+
+.custom-form {
+    color: white;
+    /**animation: .5s slideIn 1.5s forwards;
+    opacity: 0;**/
+}
+
+.form-style {
+    border: 1px #00C896 solid;
+    box-shadow: 2px 2px #ECC3AD,
+    #00C896 3px 3px;
+    transition: all .5s ease-in-out;
+    background: #ffffff;
+    color: #000000;
+}
+
+#search-button:hover {
+    background: #ffffff;
+}
+
+.form-style:hover {
+    border: 1px #00C896 solid;
+    box-shadow: 2px 2px #ECC3AD,
+    #00C896 4px 4px;
+    transition: all .5s ease-in-out;
 }
 
 .custom-form select {
@@ -48,6 +120,10 @@
 
 .custom-submit {
     width: 8rem;
+}
+
+.hidden {
+    opacity: 0;
 }
 
 /**Scrollbar Accessories**/
@@ -75,13 +151,15 @@
 .recipe-card {
     display: grid;
     grid-template-rows: 1fr;
-    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-columns: 2fr 1fr;
+    gap: 1em;
 }
 
 .recipe-card-img {
     width: 200px;
     border: black 2px solid;
     box-shadow: white 3px 3px 0, black 5px 5px 0;
+    grid-area: 1/4;
 }
 
 .recipe-card-info {
@@ -90,6 +168,7 @@
 
 .recipe-card-info h3 {
     font-size: 2rem;
+
 }
 
 .recipe-card-nutrition {
@@ -99,39 +178,61 @@
 .saved-recipe-container {
     background: white;
     margin: 3vh 3vh;
-    height: 98vh;
+    height: 80%;
     overflow-y: auto;
 }
 
 .saved-recipe-button {
-    background: lightcoral;
     width: 100%;
-    height: 10%;
+    height: auto;
     margin-bottom: 4%;
 }
 
-.clear-recipe-hisory {
+.clear-recipe-history {
     margin: 0 auto;
     width: 100%;
+}
+
+/**Animation**/
+@keyframes slideIn {
+    0% {
+        opacity: 0;
+        transform:translateX(-20px)
+    }
+    100% {
+        opacity: 1;
+    }
 }
 
 
 @media screen and (max-width: 960px) {
     .custom-container{
         width: 100%;
+        overflow-y: auto;
     };
 
-    .saved-recipe-container {
-        width: 100%;
-        height: 30%;
-    }
+    .custom-side {
+        height: 20vh;
+    };
+    
     .recipe-card-container {
-        width: 100%;
+        width: 100vw;
     };
 };
 
 @media screen and (max-width: 1200px) {
     .recipe-card-container {
         height: 90vh;
+        width: 100vw;
     };
+    .custom-container{
+        width: 100%;
+    };
+    .custom-nav {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .form-item {
+        width: 100%;
+    }
 };
