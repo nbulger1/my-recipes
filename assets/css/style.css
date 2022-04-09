@@ -18,6 +18,8 @@
     position: sticky;
     top: 0;
     z-index: 3;
+    display: flex;
+    flex-direction: row;
 }
 
 .custom-nav::before {
@@ -61,8 +63,7 @@
 }
 
 .custom-side {
-    background-color: rgb(189, 189, 189);
-    height: 100vh;
+    background: gray;
 }
 
 .custom-comment {
@@ -83,9 +84,9 @@
 }
 
 .custom-form {
-    color: white;
-    /**animation: .5s slideIn 1.5s forwards;
-    opacity: 0;**/
+    color: black;
+    animation: .5s slideIn 1s forwards;
+    opacity: 0;
 }
 
 .form-style {
@@ -95,10 +96,6 @@
     transition: all .5s ease-in-out;
     background: #ffffff;
     color: #000000;
-}
-
-#search-button:hover {
-    background: #ffffff;
 }
 
 .form-style:hover {
@@ -120,6 +117,7 @@
 
 .custom-submit {
     width: 8rem;
+    background: white;
 }
 
 .hidden {
@@ -152,11 +150,14 @@
     display: inline-block;
 }
 
+
+/**Recipe Styling**/
 .recipe-card {
     display: grid;
     grid-template-rows: 1fr;
     grid-template-columns: 2fr 1fr;
     gap: 1em;
+    height: fit-content
 }
 
 .recipe-card-img {
@@ -172,11 +173,29 @@
 
 .recipe-card-info h3 {
     font-size: 2rem;
-
+    text-align: center;
 }
+
 
 .recipe-card-nutrition {
     width: auto;
+}
+
+.recipe-card-nutrition-label {
+    grid-area: 1/4;
+    border: black 2px solid;
+    font-family: 'Helvetica', 'Arial', sans-serif
+}
+
+.recipe-card-nutrition-label > h4 {
+    font-weight: 999;
+    font-size: 2rem;
+    text-decoration: underline solid black;
+}
+
+.recipe-card-nutrition-label > span {
+    font-weight: 700;
+    margin-right: 30%;
 }
 
 .saved-recipe-container {
@@ -184,6 +203,7 @@
     margin: 3vh 3vh;
     height: 80%;
     overflow-y: auto;
+    position: relative;
 }
 
 .saved-recipe-button {
@@ -195,6 +215,19 @@
 .clear-recipe-history {
     margin: 0 auto;
     width: 100%;
+    position: sticky;
+    top: 0;
+    background: white;
+}
+
+.expand-button {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.close-button {
+    position: absolute;
 }
 
 /**Animation**/
@@ -214,10 +247,6 @@
         width: 100%;
         overflow-y: auto;
     };
-
-    .custom-side {
-        height: 20vh;
-    };
     
     .recipe-card-container {
         width: 100vw;
@@ -229,14 +258,17 @@
         height: 90vh;
         width: 100vw;
     };
+
     .custom-container{
         width: 100%;
     };
+
     .custom-nav {
-        display: flex;
-        flex-wrap: wrap;
-    }
-    .form-item {
-        width: 100%;
-    }
+        flex: 1 1 400px;
+        flex-direction: column;
+    };
+
+    .custom-side {
+        height: 60vh;
+    };
 };
