@@ -7,33 +7,27 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>My Recipes</title>
         <link rel="stylesheet" href="./assets/css/uikit_css/uikit.css" />
-        <link rel="stylesheet" href="./assets/css/style.css" />
         <script src="./assets/js/uikit_js/uikit.min.js"></script>
         <script src="./assets/js/uikit_js/uikit-icons.min.js"></script>
+        <link rel="stylesheet" href="./assets/css/style.css" />
     </head>
 
     <body>
 
         <div class="custom-container">
-            <div class="uk-navbar-container uk-navbar">
+            <div class="uk-navbar custom-nav">
                 
                 <div class="uk-navbar-left">
                     <h1 class="custom-logo">My Grandma's Recipe Box!</h1>
                 </div>
 
-                <div class="uk-navbar-item">
-                    <form id="food-search" class="custom-form uk-autocomplete uk-form" data-uk-autocomplete="{source:'my-autocomplete.json'}">
-                        <input id="keyword-text" type="text" class="uk-input form-horizontal-text" placeholder="Keywords" required>
-
+                <div class="uk-navbar-item form-item">
+                    <form id="food-search" class="custom-form">
+                        <input id="keyword-text" type="text" class="uk-input form-horizontal-text form-style" placeholder="Keywords" list="ingredient" autocomplete="off" required>
                         <datalist id="ingredient"></datalist>
 
-                        <!-- <script type="text/autocomplete">
-                            <ul class="uk-nav uk-nav-autocomplete uk-autocomplete-results">
-                                
-                        </script> -->
-
                         <label for="health-label">Health Label</label>
-                        <select id="health-label" class="uk-select" name="health-label" required>
+                        <select id="health-label" class="uk-select form-style" name="health-label" required>
                             <option value="" disabled selected>Select a restriction</option>
                             <option value="alcohol-free">Alcohol-Free</option>
                             <option value="immuno-supportive">Immuno-Supportive</option>
@@ -69,7 +63,7 @@
                         </select>
 
                         <label for="cuisine-type">Cuisine Type</label>
-                        <select id="cuisine-type" class="uk-select" name="cuisine-type" required>
+                        <select id="cuisine-type" class="uk-select form-style" name="cuisine-type" required>
                             <option value="" disabled selected>Select a region</option>
                             <option value="American">American</option>
                             <option value="Asian">Asian</option>
@@ -92,7 +86,7 @@
                         </select>
 
                         <label for="meal-type">Meal Type</label>
-                        <select id="meal-type" class="uk-select" name="meal-type" required>
+                        <select id="meal-type" class="uk-select form-style" name="meal-type" required>
                             <option value="" disabled selected>Select a meal</option>
                             <option value="Breakfast">Breakfast</option>
                             <option value="Lunch">Lunch</option>
@@ -101,7 +95,7 @@
                             <option value="Teatime">Teatime</option>
 
                       </select>
-                        <input id="search-button" type="submit" class="uk-button uk-button-default custom-submit" value="Feed Me!"/>
+                        <input id="search-button" type="submit" class="uk-button uk-button-default custom-submit form-style" value="Feed Me!"/>
                     </form>
                 </div>
             </div>
@@ -113,10 +107,9 @@
 
             <div class="uk-grid uk-grid-medium uk-height-1-1">
 
-                <div class="uk-width-1-4@m custom-side uk-height-">
+                <div class="uk-width-1-4@m custom-side">
                     <div class="saved-recipe-container" id="saved-recipes">
-                        <button class="clear-recipe-history uk-button uk-button-default">Clear Recipe History</button>
-                        <button class="uk-button uk-button-default saved-recipe-button">ABC</button>
+                        <button class="uk-button uk-button-default clear-recipe-history">Clear Recipe History</button>
                     </div>
                 </div>
                 <!--Need to update the sizing of all of the content to fit the new input changes, etc.-->
@@ -156,6 +149,11 @@
 
             </div>
         </div>
+
+        <!--<div class="uk-alert-danger" uk-alert>
+            <a class="uk-alert-close" uk-close></a>
+            <p>That recipe is already in your recents!</p>
+        </div>-->
     </body>
 
     <script src="./assets/js/script.js"></script>
