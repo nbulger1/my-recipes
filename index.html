@@ -22,10 +22,15 @@
                 </div>
 
                 <div class="uk-navbar-item">
-                    <form id="food-search" class="custom-form uk-autocomplete uk-form">
+                    <form id="food-search" class="custom-form uk-autocomplete uk-form" data-uk-autocomplete="{source:'my-autocomplete.json'}">
                         <input id="keyword-text" type="text" class="uk-input form-horizontal-text" placeholder="Keywords" required>
 
                         <datalist id="ingredient"></datalist>
+
+                        <!-- <script type="text/autocomplete">
+                            <ul class="uk-nav uk-nav-autocomplete uk-autocomplete-results">
+                                
+                        </script> -->
 
                         <label for="health-label">Health Label</label>
                         <select id="health-label" class="uk-select" name="health-label" required>
