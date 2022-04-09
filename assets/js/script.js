@@ -102,7 +102,7 @@ var cardClosed = true;
 var clickToCloseEl = document.createElement('button');
 clickToCloseEl.setAttribute("display", "none");
 
-//function to display the fivedayforecast 
+//function to display the top five recipe summaries 
 function displaySummaryRecipeCards(repos){
 
     if(!cardClosed){
@@ -114,9 +114,9 @@ function displaySummaryRecipeCards(repos){
         recipeCardEl[i].innerHTML = "";
     };
 
-    //if there are no repos found then display text to reflect
+    //if there are no recipes found then display text to reflect
     if(repos.length === 0){
-        recipeCardContainerEl.textContent = "No repositories found - Please check your city name";
+        recipeCardContainerEl.textContent = "No Recipes Found - Please try new search criteria";
         return;
     };
 
@@ -157,7 +157,6 @@ function displaySummaryRecipeCards(repos){
         recipeTitleEl.textContent = recipeTitle;
         numberOfServingsEl.textContent = numberOfServings;
         kcalCountEl.textContent = kcalCount;
-
         proteinAmountEl.textContent = proteinAmount;
         fatAmountEl.textContent = fatAmount;
         carbAmountEl.textContent = carbAmount;
@@ -305,8 +304,6 @@ function displayChosenRecipeCard(repos, recipeIndex) {
     var nutritionProteinEl = document.createElement('p');
     var disclaimerEl = document.createElement('p');
 
-    //variables that pull
-
     //Text content of each of the new elements
     nutritionInfoCardHeaderEl.textContent = "Nutrition Facts";
     nutritionNumberOfServingsEl.textContent = numberOfServings + " servings per recipe";
@@ -362,7 +359,7 @@ saveThisRecipeEl.addEventListener("click", function(event){
         recipeUrlEl.href = recipeUrl;
         recipeUrlEl.appendChild(recipeTitleHistoryEl);
         recipeTitleHistoryEl.textContent = recipeTitle;
-        //classes that the button needs?
+        //classes that the button needs
         recipeTitleHistoryEl.classList = "uk-button uk-button-default saved-recipe-button";
         saveRecipeContainerEl.appendChild(recipeUrlEl);
     } else {
@@ -390,7 +387,7 @@ window.addEventListener("load", function(){
         recipeUrlEl.href = recipeUrlReload[i];
         recipeUrlEl.appendChild(recipeTitleHistoryEl);
         recipeTitleHistoryEl.textContent = recipeTitleReload[i];
-        //classes that the button needs?
+        //classes that the button needs
         recipeTitleHistoryEl.classList = "uk-button uk-button-default";
         //determine where the saved buttons are going
         saveRecipeContainerEl.appendChild(recipeUrlEl);
