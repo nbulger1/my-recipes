@@ -185,7 +185,7 @@ function displayChosenRecipeCard(repos, recipeIndex) {
     var fatAmount = repos.hits[recipeIndex].recipe.totalNutrients.FAT.quantity.toFixed(1);
     var carbAmount = repos.hits[recipeIndex].recipe.totalNutrients.CHOCDF.quantity.toFixed(1);
     var imagePath = repos.hits[recipeIndex].recipe.image;
-    recipeUrl = repos.hits[recipeIndex].recipe.url;
+    var recipeUrl = repos.hits[recipeIndex].recipe.url;
     var recipeLength = repos.hits[recipeIndex].recipe.ingredientLines;
     var ingredientListEl = document.createElement('ul');
 
