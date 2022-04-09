@@ -28,7 +28,6 @@
 
                         <label for="health-label">Health Label</label>
                         <select id="health-label" class="uk-select form-style" name="health-label" required>
-                            <option value="" disabled selected>Select a restriction</option>
                             <option value="alcohol-free">Alcohol-Free</option>
                             <option value="immuno-supportive">Immuno-Supportive</option>
                             <option value="celery-free">Celery-Free</option>
@@ -64,7 +63,6 @@
 
                         <label for="cuisine-type">Cuisine Type</label>
                         <select id="cuisine-type" class="uk-select form-style" name="cuisine-type" required>
-                            <option value="" disabled selected>Select a region</option>
                             <option value="American">American</option>
                             <option value="Asian">Asian</option>
                             <option value="British">British</option>
@@ -100,19 +98,14 @@
                 </div>
             </div>
 
-            <!--<div class="uk-position-z-index custom-comment uk-position-absolute uk-position-center" uk-alert>
-                <a class="uk-alert-close" uk-close></a>
-                <p>Welcome! Find yourself a healthy and easy recipe for your next meal.</p>
-            </div>-->
-
             <div class="uk-grid uk-grid-medium uk-height-1-1">
 
                 <div class="uk-width-1-4@m custom-side">
-                    <div class="saved-recipe-container" id="saved-recipes">
+                    <div class="saved-recipe-container uk-flex-column" id="saved-recipes">
                         <button class="uk-button uk-button-default clear-recipe-history">Clear Recipe History</button>
                     </div>
                 </div>
-                <!--Need to update the sizing of all of the content to fit the new input changes, etc.-->
+                
                 <div class="uk-width-3-4@m">
                     <div id="recipe-container" class="uk-container recipe-card-container">
                         <div class="uk-card custom-card">
@@ -150,10 +143,10 @@
             </div>
         </div>
 
-        <!--<div class="uk-alert-danger" uk-alert>
+        <div class="uk-alert-danger" uk-alert>
             <a class="uk-alert-close" uk-close></a>
             <p>That recipe is already in your recents!</p>
-        </div>-->
+        </div>
     </body>
 
     <script src="./assets/js/script.js"></script>
