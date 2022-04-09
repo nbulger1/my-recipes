@@ -3,8 +3,6 @@ var searchButtonEl = document.getElementById("search-button");
 var searchTermEl = document.getElementById("keyword-text") //e.g Chicken
 var recipeSearchAppID = "d2a0908b";
 var recipeSearchAppKey = "6a95aab79ad4dec19b99622d9625382e";
-// var recipeNutritionAppID = "8f0d8aac";
-// var recipeNutritionAppKey = "188bfe0aca8fc01b7aa9e29ef1001500";
 var recipeAutoCompleteAppID = "5e3387fb";
 var recipeAutoCompleteAppKey = "8d9d3621066e7717beeb5e70e9967500";
 var healthLabelEl = document.getElementById("health-label"); //e.g alcohol free, celery free etc.
@@ -22,10 +20,8 @@ function getRecipeSearchApi(event) {
     var healthLabelValue = healthLabelEl.value;
     var cuisineTypeValue = cuisineTypeEl.value;
     var mealTypeValue = mealTypeEl.value;
-    console.log(searchTermValue, healthLabelValue, cuisineTypeValue, mealTypeValue)
 
     recipeSearchUrl = `https://api.edamam.com/api/recipes/v2?type=public&q=${searchTermValue}&app_id=${recipeSearchAppID}&app_key=${recipeSearchAppKey}&health=${healthLabelValue}&cuisineType=${cuisineTypeValue}&mealType=${mealTypeValue}&imageSize=REGULAR`
-    // recipeSearchUrl = `https://api.edamam.com/api/recipes/v2?type=public&q=chicken&app_id=d2a0908b&app_key=6a95aab79ad4dec19b99622d9625382e&health=alcohol-free&cuisineType=Asian&mealType=Dinner&imageSize=REGULAR`
 
     isloading = true;
     if(isloading){
@@ -33,6 +29,7 @@ function getRecipeSearchApi(event) {
         isloadingEl.textContent = "I'm loading! Please wait!";
         recipeCardContainerEl.appendChild(isloadingEl);
     }
+    
   fetch(recipeSearchUrl)
     .then(function (response) {
       return response.json();
@@ -43,10 +40,6 @@ function getRecipeSearchApi(event) {
             isloadingEl.innerHTML = "";
         }
         repos = data;
-        console.log(data);
-        // var recipeSearchFoodID = "" //TODO change to actual Food ID
-        // var recipeSearchUri = "" //TODO change to actual URI
-        //getRecipeNutritionApi(recipeSearchFoodID,recipeSearchUri);
         displaySummaryRecipeCards(data);
     })  
     //add a .catch :) with isloading = false, iserror
@@ -61,15 +54,10 @@ function getRecipeAutoCompleteApi() {
       return response.json();
   })
   .then(function(data) {
-    console.log(data); 
-    //postion absolute to fix the box then display the box under form/display as a list/display box z-index
-    
+
     ingredientEl.replaceChildren();
-
     data.forEach(function(ingredient) {
-
         var ingredientValue = document.createElement('option');
-        //ingredientEl.setAttribute("class", "visible");
         ingredientValue.setAttribute("value", ingredient);
         ingredientValue.innerText = ingredient;
         ingredientEl.appendChild(ingredientValue);
@@ -82,17 +70,6 @@ function getRecipeAutoCompleteApi() {
 searchButtonEl.addEventListener('click', getRecipeSearchApi);
 searchTermEl.addEventListener('keydown', getRecipeAutoCompleteApi);
 
-// function getRecipeNutritionApi(recipeSearchFoodID,recipeSearchUri) {
-//   var recipeNutritionApiUrl = `https://api.edamam.com/api/nutrition-details?app_id=${recipeNutritionAppID}&app_key=${recipeNutritionAppKey}`;
-//   fetch(recipeNutritionApiUrl)
-//   .then(function (response) {
-//       return response.json();
-//   })
-//   .then(function(data) {
-//     console.log(data); 
-
-//   });
-// }
 
 var recipeCardContainerEl = document.querySelector(".recipe-card-container");
 var recipeCardEl = document.querySelectorAll(".recipe-card");
