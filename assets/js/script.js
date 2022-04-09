@@ -83,7 +83,6 @@ function displaySummaryRecipeCards(repos){
     //Clear out five recipe cards
     for(var i=0; i<recipeCardEl.length; i++){
         recipeCardEl[i].innerHTML = "";
-        recipeCardEl[i].setAttribute("data-index", i);
     };
 
     //if there are no repos found then display text to reflect
@@ -151,17 +150,12 @@ function displaySummaryRecipeCards(repos){
         clickToExpandEl.textContent = "Click to Expand"
         baseInfoContainerEl.appendChild(clickToExpandEl);
 
-        // baseInfoContainerEl.setAttribute("data-index", i);
-        // macroInfoContainerEl.setAttribute("data-index", i);
-        // imageContainerEl.setAttribute("data-index", i);
-
     }
 
 };
 
 recipeCardContainerEl.addEventListener("click", function(event){
     var recipeIndex = event.target.getAttribute("data-index");
-    // getRecipeSearchApi(event);
     if(cardClosed){
         displayChosenRecipeCard(repos, recipeIndex);
     } else {
@@ -169,6 +163,10 @@ recipeCardContainerEl.addEventListener("click", function(event){
     };
 
 });
+
+// var saveThisRecipeEl = document.createElement('button');
+// saveThisRecipeEl.setAttribute("data-index", recipeIndex);
+// saveThisRecipeEl.setAttribute("display", "none");
 
 function displayChosenRecipeCard(repos, recipeIndex) {
 
@@ -187,7 +185,7 @@ function displayChosenRecipeCard(repos, recipeIndex) {
     var fatAmount = repos.hits[recipeIndex].recipe.totalNutrients.FAT.quantity.toFixed(1);
     var carbAmount = repos.hits[recipeIndex].recipe.totalNutrients.CHOCDF.quantity.toFixed(1);
     var imagePath = repos.hits[recipeIndex].recipe.image;
-    var recipeUrl = repos.hits[recipeIndex].recipe.url;
+    recipeUrl = repos.hits[recipeIndex].recipe.url;
     var recipeLength = repos.hits[recipeIndex].recipe.ingredientLines;
     var ingredientListEl = document.createElement('ul');
 
@@ -221,6 +219,8 @@ function displayChosenRecipeCard(repos, recipeIndex) {
 
     var imageContainerEl = document.createElement('img');
     imageContainerEl.classList.add("recipe-card-info");
+    // saveThisRecipeEl.setAttribute("display", "block");
+
     var saveThisRecipeEl = document.createElement('button');
     saveThisRecipeEl.setAttribute("data-index", recipeIndex);
 
@@ -303,8 +303,7 @@ function displayChosenRecipeCard(repos, recipeIndex) {
     clickToCloseEl = document.createElement('button');
     clickToCloseEl.setAttribute("data-index", i);
     clickToCloseEl.textContent = "Click to Close"
-    baseInfoContainerEl.appendChild(clickToCloseEl);
-
+    nutritionInfoCardEl.appendChild(clickToCloseEl);
 
     saveThisRecipeEl.addEventListener("click", function(){
         var recipeTitleStorage = JSON.parse(localStorage.getItem("recipeTitle")) || [];
@@ -332,6 +331,7 @@ function displayChosenRecipeCard(repos, recipeIndex) {
         localStorage.setItem("recipeUrl", JSON.stringify(recipeUrlStorage));
     })
 };
+
 
 //Populate the search history city buttons through page reload
 window.addEventListener("load", function(){
