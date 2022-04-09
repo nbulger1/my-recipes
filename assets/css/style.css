@@ -228,4 +228,11 @@
     .custom-container{
         width: 100%;
     };
+    .custom-nav {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .form-item {
+        width: 100%;
+    }
 };
