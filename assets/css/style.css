@@ -148,10 +148,6 @@
     display: none;
 }
 
-.visible {
-    display: inline-block;
-}
-
 .recipe-card {
     display: grid;
     grid-template-rows: 1fr;
