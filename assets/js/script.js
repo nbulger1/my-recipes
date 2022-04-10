@@ -40,6 +40,7 @@ function getRecipeSearchApi(event) {
             isloadingEl.innerHTML = "";
         }
         repos = data;
+        console.log(data);
         displaySummaryRecipeCards(data);
     })  
     //add a .catch :) with isloading = false, iserror
@@ -126,13 +127,13 @@ function buildRecipes(repos, i){
     //Number of servings the recipe makes
     var numberOfServings =  repos.hits[i].recipe.yield + " Servings";
     //Number of kcal in the recipe fixed to 1 decimal point
-    var kcalCount = repos.hits[i].recipe.calories.toFixed(1) + " kcal";
+    var kcalCount = ((repos.hits[i].recipe.calories)/(repos.hits[i].recipe.yield)).toFixed(1) + " kcal per serving";
     //Protein amount in grams fixed to 1 decimal point
-    var proteinAmount = "Protein: " + repos.hits[i].recipe.totalNutrients.PROCNT.quantity.toFixed(1) + " g";
+    var proteinAmount = "Protein: " + ((repos.hits[i].recipe.totalNutrients.PROCNT.quantity)/(repos.hits[i].recipe.yield)).toFixed(1) + " g";
     //fat amount in grams fixed to 1 decimal point
-    var fatAmount = "Fat: " + repos.hits[i].recipe.totalNutrients.FAT.quantity.toFixed(1) + " g";
+    var fatAmount = "Fat: " + ((repos.hits[i].recipe.totalNutrients.FAT.quantity)/(repos.hits[i].recipe.yield)).toFixed(1) + " g";
     //carb amount in grams fixed to 1 decimal point
-    var carbAmount = "Carb: " + repos.hits[i].recipe.totalNutrients.CHOCDF.quantity.toFixed(1) + " g";
+    var carbAmount = "Carb: " + ((repos.hits[i].recipe.totalNutrients.CHOCDF.quantity)/(repos.hits[i].recipe.yield)).toFixed(1) + " g";
     //collect the image URL so it can be set a source later
     var imagePath = repos.hits[i].recipe.image;
 
@@ -145,6 +146,7 @@ function buildRecipes(repos, i){
 
     var macroInfoContainerEl = document.createElement('div');
     macroInfoContainerEl.classList.add("recipe-card-nutrition");
+    var macroInfoContainerHeaderEl = document.createElement('h4');
     var proteinAmountEl = document.createElement('p');
     var fatAmountEl = document.createElement('p');
     var carbAmountEl = document.createElement('p');
@@ -166,6 +168,7 @@ function buildRecipes(repos, i){
     proteinAmountEl.textContent = proteinAmount;
     fatAmountEl.textContent = fatAmount;
     carbAmountEl.textContent = carbAmount;
+    macroInfoContainerHeaderEl.textContent = "Macronutrients Per Serving";
 
     imageContainerEl.setAttribute("src", imagePath);
 
@@ -178,6 +181,7 @@ function buildRecipes(repos, i){
 
     buttonContainerEl.appendChild(clickToExpandEl);
 
+    macroInfoContainerEl.appendChild(macroInfoContainerHeaderEl);
     macroInfoContainerEl.appendChild(proteinAmountEl);
     macroInfoContainerEl.appendChild(fatAmountEl);
     macroInfoContainerEl.appendChild(carbAmountEl);
@@ -316,19 +320,19 @@ function displayChosenRecipeCard(repos, recipeIndex) {
     var nutritionProteinEl = document.createElement('p');
     var disclaimerEl = document.createElement('p');
 
-    //Apply the text content of each of the new elements - fixing the necessary values to 1 decimal point
+    //Apply the text content of each of the new elements - fixing the necessary values to 1 decimal point and dividing each value by the number of servings to get the appropriate values because the API gives the values for all x number of servings
     nutritionInfoCardHeaderEl.textContent = "Nutrition Facts";
     nutritionNumberOfServingsEl.textContent = numberOfServings + " servings per recipe";
     amountPerServingHeaderEl.textContent = "Amount Per Serving";
-    nutritionCaloriesEl.textContent = "Calories " + kcalCount;
+    nutritionCaloriesEl.textContent = "Calories " + (kcalCount/numberOfServings).toFixed(1);
     percentDailyValueEl.textContent = "% Daily Value*";
-    nutritionFatEl.textContent = "Total Fat " + fatAmount + "g" + " " + repos.hits[recipeIndex].recipe.totalDaily.FAT.quantity.toFixed(1) + "%";
-    nutritionCholesterolEl.textContent = "Cholesterol " + repos.hits[recipeIndex].recipe.totalNutrients.CHOLE.quantity.toFixed(1) + " mg" + " " + repos.hits[recipeIndex].recipe.totalDaily.CHOLE.quantity.toFixed(1) + "%";
-    nutritionSodiumEl.textContent = "Sodium " + repos.hits[recipeIndex].recipe.totalNutrients.NA.quantity.toFixed(1) + " mg" +  " " + repos.hits[recipeIndex].recipe.totalDaily.NA.quantity.toFixed(1) + "%";
-    nutritionCarbEl.textContent = "Total Carb " + carbAmount + " g" + " " + repos.hits[recipeIndex].recipe.totalDaily.CHOCDF.quantity.toFixed(1) + "%";
-    nutritionFiberEl.textContent = "Dietary Fiber " + repos.hits[recipeIndex].recipe.totalNutrients.FIBTG.quantity.toFixed(1) + " g" + " " + repos.hits[recipeIndex].recipe.totalDaily.FIBTG.quantity.toFixed(1) + "%";
-    nutritionSugarsEl.textContent = "Total Sugars " + repos.hits[recipeIndex].recipe.totalNutrients.SUGAR.quantity.toFixed(2) + " g";
-    nutritionProteinEl.textContent = "Protein " + proteinAmount + " g" + " " + repos.hits[recipeIndex].recipe.totalDaily.PROCNT.quantity.toFixed(1) + "%";
+    nutritionFatEl.textContent = "Total Fat " + (fatAmount/numberOfServings).toFixed(1) + "g" + " " + ((repos.hits[recipeIndex].recipe.totalDaily.FAT.quantity)/(numberOfServings)).toFixed(1) + "%";
+    nutritionCholesterolEl.textContent = "Cholesterol " + ((repos.hits[recipeIndex].recipe.totalNutrients.CHOLE.quantity)/(numberOfServings)).toFixed(1) + " mg" + " " + ((repos.hits[recipeIndex].recipe.totalDaily.CHOLE.quantity)/(numberOfServings)).toFixed(1) + "%";
+    nutritionSodiumEl.textContent = "Sodium " + ((repos.hits[recipeIndex].recipe.totalNutrients.NA.quantity)/(numberOfServings)).toFixed(1) + " mg" +  " " + ((repos.hits[recipeIndex].recipe.totalDaily.NA.quantity)/(numberOfServings)).toFixed(1) + "%";
+    nutritionCarbEl.textContent = "Total Carb " + (carbAmount/numberOfServings).toFixed(1) + " g" + " " + ((repos.hits[recipeIndex].recipe.totalDaily.CHOCDF.quantity)/(numberOfServings)).toFixed(1) + "%";
+    nutritionFiberEl.textContent = "Dietary Fiber " + ((repos.hits[recipeIndex].recipe.totalNutrients.FIBTG.quantity)/(numberOfServings)).toFixed(1) + " g" + " " + ((repos.hits[recipeIndex].recipe.totalDaily.FIBTG.quantity)/(numberOfServings)).toFixed(1) + "%";
+    nutritionSugarsEl.textContent = "Total Sugars " + ((repos.hits[recipeIndex].recipe.totalNutrients.SUGAR.quantity)/(numberOfServings)).toFixed(2) + " g";
+    nutritionProteinEl.textContent = "Protein " + (proteinAmount/numberOfServings).toFixed(1) + " g" + " " + ((repos.hits[recipeIndex].recipe.totalDaily.PROCNT.quantity)/(numberOfServings)).toFixed(1) + "%";
     disclaimerEl.textContent = "*Percent Daily Values are based on 2000 calorie diet";
 
     //Append the child elements to the nutrition info card to be styled later
