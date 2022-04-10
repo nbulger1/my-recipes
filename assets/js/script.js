@@ -40,7 +40,6 @@ function getRecipeSearchApi(event) {
             isloadingEl.innerHTML = "";
         }
         repos = data;
-        console.log(data);
         displaySummaryRecipeCards(data);
     })  
     //add a .catch :) with isloading = false, iserror
@@ -80,15 +79,23 @@ var cardClosed = true;
 //creating the click to close button and setting it to hide
 var clickToCloseEl = document.createElement('button');
 clickToCloseEl.setAttribute("display", "none");
+//Create a save recipe button and setting it to hide
+var saveThisRecipeEl = document.createElement('button');
+saveThisRecipeEl.setAttribute("display", "none");
+//create URL and title variable globally so they can be defined and used in multiple different functions
+var recipeUrl;
+var recipeTitle;
+
 
 //function to display the top five recipe summaries 
 function displaySummaryRecipeCards(repos){
 
+    //Set the cardclosed boolean to true if it is false to keep track of how the page looks
     if(!cardClosed){
         cardClosed = true;
     };
 
-    //Clear out five recipe cards
+    //Clear out any content in the five recipe cards
     for(var i=0; i<recipeCardEl.length; i++){
         recipeCardEl[i].innerHTML = "";
     };
@@ -97,10 +104,12 @@ function displaySummaryRecipeCards(repos){
     if(repos.count === 0){
         recipeCardContainerEl.textContent = "No Recipes Found - Please try new search criteria";
         return;
+    //else if the recipe count is less than or equal to 5 then display the total number of recipes there are
     } else if(repos.count<=5){
         for(var i=0; i<repos.count; i++){
             buildRecipes(repos, i);
         }
+    //else if there are more than 5 recipes found in the API call then display the first five
     } else if(repos.count>5){
         for(var i=0; i<5; i++){
             buildRecipes(repos, i);
@@ -109,21 +118,25 @@ function displaySummaryRecipeCards(repos){
 
 };
 
+//function to build out a recipe card that passes the API call data as well as the index value of the recipe count
 function buildRecipes(repos, i){
     //Gather all the necessary information for the recipe cards
     //Gather recipe title
     var recipeTitle = repos.hits[i].recipe.label;
     //Number of servings the recipe makes
     var numberOfServings =  repos.hits[i].recipe.yield + " Servings";
-    //Number of kcal in the recipe
+    //Number of kcal in the recipe fixed to 1 decimal point
     var kcalCount = repos.hits[i].recipe.calories.toFixed(1) + " kcal";
-    //Protein amount in grams
+    //Protein amount in grams fixed to 1 decimal point
     var proteinAmount = "Protein: " + repos.hits[i].recipe.totalNutrients.PROCNT.quantity.toFixed(1) + " g";
+    //fat amount in grams fixed to 1 decimal point
     var fatAmount = "Fat: " + repos.hits[i].recipe.totalNutrients.FAT.quantity.toFixed(1) + " g";
+    //carb amount in grams fixed to 1 decimal point
     var carbAmount = "Carb: " + repos.hits[i].recipe.totalNutrients.CHOCDF.quantity.toFixed(1) + " g";
+    //collect the image URL so it can be set a source later
     var imagePath = repos.hits[i].recipe.image;
 
-    //Create the child elements
+    //Create the child elements in four different containers to assist with ease of styling later (base information, macronutrient info, an image container, and a container for any buttons)
     var baseInfoContainerEl = document.createElement('div');
     baseInfoContainerEl.classList.add("recipe-card-info");
     var recipeTitleEl = document.createElement('h3');
@@ -140,6 +153,11 @@ function buildRecipes(repos, i){
     imageContainerEl.classList.add("recipe-card-img");
 
     var buttonContainerEl = document.createElement('div');
+    //Create a click to expand variable that will allow the user to "open" the recipe card to reveal more information
+    var clickToExpandEl = document.createElement('button');
+    clickToExpandEl.setAttribute("display", "block");
+    clickToExpandEl.setAttribute("class", "expand-button");
+    clickToExpandEl.setAttribute("data-click", i);
 
     //Apply the text content using the gathered information and child elements
     recipeTitleEl.textContent = recipeTitle;
@@ -151,12 +169,9 @@ function buildRecipes(repos, i){
 
     imageContainerEl.setAttribute("src", imagePath);
 
-    var clickToExpandEl = document.createElement('button');
-    clickToExpandEl.setAttribute("display", "block");
-    clickToExpandEl.setAttribute("class", "expand-button");
-    clickToExpandEl.setAttribute("data-click", i);
     clickToExpandEl.textContent = "Click to Expand";
 
+    //Append all the new child elements with their text content into their appropriate divs and then add those four divs to the recipe card container in the HTML
     baseInfoContainerEl.appendChild(recipeTitleEl);
     baseInfoContainerEl.appendChild(numberOfServingsEl);
     baseInfoContainerEl.appendChild(kcalCountEl);
@@ -172,9 +187,12 @@ function buildRecipes(repos, i){
     recipeCardEl[i].appendChild(imageContainerEl);
     recipeCardEl[i].appendChild(buttonContainerEl);
 
+    //Apply the custom-card class to each of the recipe cards to style
     ukCardEl[i].classList = "custom-card";
 
+    //Add an event listener for the click to expand button that runs the chosen recipe card display function and makes the save recipe button appear
     clickToExpandEl.addEventListener("click", function(event){
+        //grab the data attribute to pass through the chosen recipe card function
         var recipeClick = event.target.getAttribute("data-click");
         if(cardClosed){
             displayChosenRecipeCard(repos, recipeClick);
@@ -183,38 +201,34 @@ function buildRecipes(repos, i){
     });
 };
 
+//Add an event listener to the click to close button that reruns the summary recipe card function 
 clickToCloseEl.addEventListener("click", function(event){
     var recipeClick = event.target.getAttribute("data-click");
     if(!cardClosed){
         displaySummaryRecipeCards(repos, recipeClick);
     };
-})
+});
 
-var saveThisRecipeEl = document.createElement('button');
-saveThisRecipeEl.setAttribute("display", "none");
-var recipeUrl;
-var recipeTitle;
-
+//Function to create the child elements for the chosen recipe card - when the click to expand button is clicked then run this function to display more information
 function displayChosenRecipeCard(repos, recipeIndex) {
 
+    //If the card closed boolean is true then change to false now that one of the cards is open
     if(cardClosed){
         cardClosed = false;
     }
-    //Gather all the necessary information for the recipe cards
-    //Gather recipe title
+    //Gather all the necessary information for the base information portion of the open recipe card
     recipeTitle = repos.hits[recipeIndex].recipe.label;
-    //Number of servings the recipe makes
     var numberOfServings =  repos.hits[recipeIndex].recipe.yield;
-    //Number of kcal in the recipe
     var kcalCount = repos.hits[recipeIndex].recipe.calories.toFixed(1);
-    //Protein amount in grams
     var proteinAmount = repos.hits[recipeIndex].recipe.totalNutrients.PROCNT.quantity.toFixed(1);
     var fatAmount = repos.hits[recipeIndex].recipe.totalNutrients.FAT.quantity.toFixed(1);
     var carbAmount = repos.hits[recipeIndex].recipe.totalNutrients.CHOCDF.quantity.toFixed(1);
     var imagePath = repos.hits[recipeIndex].recipe.image;
+    //redefine the recipe URL variable created globally to use it in the local storage function later
     recipeUrl = repos.hits[recipeIndex].recipe.url;
+    //pull the ingredient lines into an array variable
     var recipeLength = repos.hits[recipeIndex].recipe.ingredientLines;
-    var ingredientListEl = document.createElement('ul');
+
 
     //Create the child elements for the base information div
     var baseInfoContainerEl = document.createElement('div');
@@ -226,14 +240,16 @@ function displayChosenRecipeCard(repos, recipeIndex) {
     var fatAmountEl = document.createElement('p');
     var carbAmountEl = document.createElement('p');
     var ingredientListHeaderEl = document.createElement('h3');
+    var ingredientListEl = document.createElement('ul');
 
-    //Loop through ingredient list and pull
+    //Loop through ingredient list and pull to create the ingredient list
     for(var i=0; i<recipeLength.length; i++){
         var ingredientListItemEl = document.createElement('li');
         ingredientListItemEl.textContent = recipeLength[i];
         ingredientListEl.appendChild(ingredientListItemEl);
     };
 
+    //Loop through the ingredients to pull the different specific ingredients as a possible shopping list
     var shoppingList = repos.hits[recipeIndex].recipe.ingredients;
     var shoppingListHeaderEl = document.createElement('h3');
     shoppingListHeaderEl.textContent = "Possible Shopping List";
@@ -249,10 +265,16 @@ function displayChosenRecipeCard(repos, recipeIndex) {
     
     var buttonContainerEl = document.createElement('div');
 
+    //Setting data attributes and classes of each button present in the open card
     saveThisRecipeEl.setAttribute("data-index", recipeIndex);
-    clickToCloseEl.setAttribute("class", "save-button");
+    saveThisRecipeEl.setAttribute("class", "save-button");
+        
+    clickToCloseEl.setAttribute("display", "block");
+    clickToCloseEl.setAttribute("class", "close-button");
+    clickToCloseEl.setAttribute("data-click", i);
+    clickToCloseEl.textContent = "Click to Close"
 
-    //Apply the text content using the gathered information and child elements
+    //Apply the text content using the gathered information and child elements for the base information container
     recipeTitleEl.textContent = recipeTitle;
     numberOfServingsEl.textContent = numberOfServings + " Servings";
     kcalCountEl.textContent = kcalCount + " kcal";
@@ -264,7 +286,7 @@ function displayChosenRecipeCard(repos, recipeIndex) {
 
     imageContainerEl.setAttribute("src", imagePath);
 
-    //Appending Children to the base information
+    //Appending Children to the base information container
     baseInfoContainerEl.appendChild(recipeTitleEl);
     baseInfoContainerEl.appendChild(proteinAmountEl);
     baseInfoContainerEl.appendChild(fatAmountEl);
@@ -274,11 +296,11 @@ function displayChosenRecipeCard(repos, recipeIndex) {
     baseInfoContainerEl.appendChild(shoppingListHeaderEl);
     baseInfoContainerEl.appendChild(shoppingListEl);
 
+    //Append the two buttons to the button container element
     buttonContainerEl.appendChild(saveThisRecipeEl);
     buttonContainerEl.appendChild(clickToCloseEl);
 
-    //Nutrition Information Card Elements
-
+    //Create the Nutrition Information Card Elements
     var nutritionInfoCardEl = document.createElement('div');
     var nutritionInfoCardHeaderEl = document.createElement('h4');
     var nutritionNumberOfServingsEl = document.createElement('p');
@@ -294,7 +316,7 @@ function displayChosenRecipeCard(repos, recipeIndex) {
     var nutritionProteinEl = document.createElement('p');
     var disclaimerEl = document.createElement('p');
 
-    //Text content of each of the new elements
+    //Apply the text content of each of the new elements - fixing the necessary values to 1 decimal point
     nutritionInfoCardHeaderEl.textContent = "Nutrition Facts";
     nutritionNumberOfServingsEl.textContent = numberOfServings + " servings per recipe";
     amountPerServingHeaderEl.textContent = "Amount Per Serving";
@@ -309,6 +331,7 @@ function displayChosenRecipeCard(repos, recipeIndex) {
     nutritionProteinEl.textContent = "Protein " + proteinAmount + " g" + " " + repos.hits[recipeIndex].recipe.totalDaily.PROCNT.quantity.toFixed(1) + "%";
     disclaimerEl.textContent = "*Percent Daily Values are based on 2000 calorie diet";
 
+    //Append the child elements to the nutrition info card to be styled later
     nutritionInfoCardEl.appendChild(nutritionInfoCardHeaderEl);
     nutritionInfoCardEl.appendChild(nutritionNumberOfServingsEl);
     nutritionInfoCardEl.appendChild(amountPerServingHeaderEl);
@@ -323,29 +346,29 @@ function displayChosenRecipeCard(repos, recipeIndex) {
     nutritionInfoCardEl.appendChild(nutritionProteinEl);
     nutritionInfoCardEl.appendChild(disclaimerEl);
 
+    //Once all the containers are filled - clear out the information in the chosen recipe card and refill it with the new information in the form of the four containers
     recipeCardEl[recipeIndex].innerHTML = "";
     recipeCardEl[recipeIndex].appendChild(baseInfoContainerEl);
     recipeCardEl[recipeIndex].appendChild(imageContainerEl);
     recipeCardEl[recipeIndex].appendChild(nutritionInfoCardEl);
     recipeCardEl[recipeIndex].appendChild(buttonContainerEl);
-
-    clickToCloseEl.setAttribute("display", "block");
-    clickToCloseEl.setAttribute("class", "close-button");
-    clickToCloseEl.setAttribute("data-click", i);
-    clickToCloseEl.textContent = "Click to Close"
-
 };
 
+//Add an event listener to the save recipe button to create saved recipe buttons that are linked to the recipe title and url
 saveThisRecipeEl.addEventListener("click", function(event){
     event.preventDefault();
+    //Pull an recipe titles or urls already present in local storage and store them as an array
     var recipeTitleStorage = JSON.parse(localStorage.getItem("recipeTitle")) || [];
     var recipeUrlStorage = JSON.parse(localStorage.getItem("recipeUrl")) || [];
 
+    //If the new recipe URL isn't already present in local storage then make a new button that is attached to the associated recipe url link and push the recipe URL and recipe title onto the end of the arrays
     if(!recipeUrlStorage.includes(recipeUrl)){
         recipeTitleStorage.push(recipeTitle);
         recipeUrlStorage.push(recipeUrl)
         var recipeTitleHistoryEl = document.createElement("button");
+        //create an a tag to hold the recipe URL
         var recipeUrlEl = document.createElement("a");
+        //create a blank target to open the recipe in a new tab instead of redirecting from the recipe box page
         recipeUrlEl.target = "_blank";
         recipeUrlEl.href = recipeUrl;
         recipeUrlEl.appendChild(recipeTitleHistoryEl);
@@ -355,19 +378,19 @@ saveThisRecipeEl.addEventListener("click", function(event){
         saveRecipeContainerEl.appendChild(recipeUrlEl);
     };
 
-    //Store the new array with any additional cities in local storage
+    //Store the new array with any additional recipe titles and urls in local storage
     localStorage.setItem("recipeTitle", JSON.stringify(recipeTitleStorage));
     localStorage.setItem("recipeUrl", JSON.stringify(recipeUrlStorage));
 });
 
 
-//Populate the search history city buttons through page reload
+//Populate the recipe history buttons through page reload
 window.addEventListener("load", function(){
-    //Pull the local storage cities and store them as an array
+    //Pull the local storage recipe titles and urls and store them as an array
     var recipeUrlReload = JSON.parse(localStorage.getItem("recipeUrl")) || [];
     var recipeTitleReload = JSON.parse(localStorage.getItem("recipeTitle")) || [];
 
-    //Go through each of the cities in the array and create a button with the city as a data attribute
+    //Go through each of the recipe titles and urls in the arrays and create a button with the url as an a tag and the recipe title as the text content of the button
     for(var i=0; i<recipeUrlReload.length; i++){
         var recipeTitleHistoryEl = document.createElement("button");
         var recipeUrlEl = document.createElement("a");
@@ -381,8 +404,9 @@ window.addEventListener("load", function(){
         saveRecipeContainerEl.appendChild(recipeUrlEl);
     };
 
-})
+});
 
+//Create a clear recipe history button that the user can use to clear out their local storage and all the associated history buttons
 var clearRecipeHistoryEl = document.querySelector(".clear-recipe-history");
 clearRecipeHistoryEl.addEventListener("click", function(event){
     event.preventDefault();
