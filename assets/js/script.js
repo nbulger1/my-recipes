@@ -240,6 +240,7 @@ function displayChosenRecipeCard(repos, recipeIndex) {
     var recipeTitleEl = document.createElement('h3');
     var numberOfServingsEl = document.createElement('p');
     var kcalCountEl = document.createElement('p');
+    var macronutrientHeaderEl = document.createElement('h4');
     var proteinAmountEl = document.createElement('p');
     var fatAmountEl = document.createElement('p');
     var carbAmountEl = document.createElement('p');
@@ -280,6 +281,7 @@ function displayChosenRecipeCard(repos, recipeIndex) {
 
     //Apply the text content using the gathered information and child elements for the base information container
     recipeTitleEl.textContent = recipeTitle;
+    macronutrientHeaderEl.textContent = "Macronutrients Per Serving";
     numberOfServingsEl.textContent = numberOfServings + " Servings";
     kcalCountEl.textContent = kcalCount + " kcal";
     proteinAmountEl.textContent = "Protein: " + proteinAmount + " g";
@@ -292,6 +294,7 @@ function displayChosenRecipeCard(repos, recipeIndex) {
 
     //Appending Children to the base information container
     baseInfoContainerEl.appendChild(recipeTitleEl);
+    baseInfoContainerEl.appendChild(macronutrientHeaderEl);
     baseInfoContainerEl.appendChild(proteinAmountEl);
     baseInfoContainerEl.appendChild(fatAmountEl);
     baseInfoContainerEl.appendChild(carbAmountEl);
