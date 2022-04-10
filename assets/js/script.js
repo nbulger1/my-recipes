@@ -40,6 +40,7 @@ function getRecipeSearchApi(event) {
             isloadingEl.innerHTML = "";
         }
         repos = data;
+        console.log(data);
         displaySummaryRecipeCards(data);
     })  
     //add a .catch :) with isloading = false, iserror
@@ -70,12 +71,13 @@ function getRecipeAutoCompleteApi() {
 searchButtonEl.addEventListener('click', getRecipeSearchApi);
 searchTermEl.addEventListener('keydown', getRecipeAutoCompleteApi);
 
-
+//Event handlers for the recipe cards and containers
 var recipeCardContainerEl = document.querySelector(".recipe-card-container");
 var recipeCardEl = document.querySelectorAll(".recipe-card");
 var ukCardEl = document.querySelectorAll(".uk-card");
 var saveRecipeContainerEl = document.querySelector("#saved-recipes");
 var cardClosed = true;
+//creating the click to close button and setting it to hide
 var clickToCloseEl = document.createElement('button');
 clickToCloseEl.setAttribute("display", "none");
 
@@ -92,83 +94,93 @@ function displaySummaryRecipeCards(repos){
     };
 
     //if there are no recipes found then display text to reflect
-    if(repos.length === 0){
+    if(repos.count === 0){
         recipeCardContainerEl.textContent = "No Recipes Found - Please try new search criteria";
         return;
+    } else if(repos.count<=5){
+        for(var i=0; i<repos.count; i++){
+            buildRecipes(repos, i);
+        }
+    } else if(repos.count>5){
+        for(var i=0; i<5; i++){
+            buildRecipes(repos, i);
+        };
     };
 
-    for(var i=0; i<5; i++){
-        ukCardEl[i].classList = "custom-card";
-        //Gather all the necessary information for the recipe cards
-        //Gather recipe title
-        var recipeTitle = repos.hits[i].recipe.label;
-        //Number of servings the recipe makes
-        var numberOfServings =  repos.hits[i].recipe.yield + " Servings";
-        //Number of kcal in the recipe
-        var kcalCount = repos.hits[i].recipe.calories.toFixed(1) + " kcal";
-        //Protein amount in grams
-        var proteinAmount = "Protein: " + repos.hits[i].recipe.totalNutrients.PROCNT.quantity.toFixed(1) + " g";
-        var fatAmount = "Fat: " + repos.hits[i].recipe.totalNutrients.FAT.quantity.toFixed(1) + " g";
-        var carbAmount = "Carb: " + repos.hits[i].recipe.totalNutrients.CHOCDF.quantity.toFixed(1) + " g";
-        var imagePath = repos.hits[i].recipe.image;
+};
 
-        //Create the child elements
-        var baseInfoContainerEl = document.createElement('div');
-        baseInfoContainerEl.classList.add("recipe-card-info");
-        var recipeTitleEl = document.createElement('h3');
-        var numberOfServingsEl = document.createElement('p');
-        var kcalCountEl = document.createElement('p');
+function buildRecipes(repos, i){
+    //Gather all the necessary information for the recipe cards
+    //Gather recipe title
+    var recipeTitle = repos.hits[i].recipe.label;
+    //Number of servings the recipe makes
+    var numberOfServings =  repos.hits[i].recipe.yield + " Servings";
+    //Number of kcal in the recipe
+    var kcalCount = repos.hits[i].recipe.calories.toFixed(1) + " kcal";
+    //Protein amount in grams
+    var proteinAmount = "Protein: " + repos.hits[i].recipe.totalNutrients.PROCNT.quantity.toFixed(1) + " g";
+    var fatAmount = "Fat: " + repos.hits[i].recipe.totalNutrients.FAT.quantity.toFixed(1) + " g";
+    var carbAmount = "Carb: " + repos.hits[i].recipe.totalNutrients.CHOCDF.quantity.toFixed(1) + " g";
+    var imagePath = repos.hits[i].recipe.image;
 
-        var macroInfoContainerEl = document.createElement('div');
-        macroInfoContainerEl.classList.add("recipe-card-nutrition");
-        var proteinAmountEl = document.createElement('p');
-        var fatAmountEl = document.createElement('p');
-        var carbAmountEl = document.createElement('p');
+    //Create the child elements
+    var baseInfoContainerEl = document.createElement('div');
+    baseInfoContainerEl.classList.add("recipe-card-info");
+    var recipeTitleEl = document.createElement('h3');
+    var numberOfServingsEl = document.createElement('p');
+    var kcalCountEl = document.createElement('p');
 
-        var imageContainerEl = document.createElement('img');
-        imageContainerEl.classList.add("recipe-card-img");
+    var macroInfoContainerEl = document.createElement('div');
+    macroInfoContainerEl.classList.add("recipe-card-nutrition");
+    var proteinAmountEl = document.createElement('p');
+    var fatAmountEl = document.createElement('p');
+    var carbAmountEl = document.createElement('p');
 
-        var buttonContainerEl = document.createElement('div');
+    var imageContainerEl = document.createElement('img');
+    imageContainerEl.classList.add("recipe-card-img");
 
-        //Apply the text content using the gathered information and child elements
-        recipeTitleEl.textContent = recipeTitle;
-        numberOfServingsEl.textContent = numberOfServings;
-        kcalCountEl.textContent = kcalCount;
-        proteinAmountEl.textContent = proteinAmount;
-        fatAmountEl.textContent = fatAmount;
-        carbAmountEl.textContent = carbAmount;
+    var buttonContainerEl = document.createElement('div');
 
-        imageContainerEl.setAttribute("src", imagePath);
+    //Apply the text content using the gathered information and child elements
+    recipeTitleEl.textContent = recipeTitle;
+    numberOfServingsEl.textContent = numberOfServings;
+    kcalCountEl.textContent = kcalCount;
+    proteinAmountEl.textContent = proteinAmount;
+    fatAmountEl.textContent = fatAmount;
+    carbAmountEl.textContent = carbAmount;
 
-        var clickToExpandEl = document.createElement('button');
-        clickToExpandEl.setAttribute("display", "block");
-        clickToExpandEl.setAttribute("data-click", i);
-        clickToExpandEl.textContent = "Click to Expand";
+    imageContainerEl.setAttribute("src", imagePath);
 
-        baseInfoContainerEl.appendChild(recipeTitleEl);
-        baseInfoContainerEl.appendChild(numberOfServingsEl);
-        baseInfoContainerEl.appendChild(kcalCountEl);
+    var clickToExpandEl = document.createElement('button');
+    clickToExpandEl.setAttribute("display", "block");
+    clickToExpandEl.setAttribute("class", "expand-button");
+    clickToExpandEl.setAttribute("data-click", i);
+    clickToExpandEl.textContent = "Click to Expand";
 
-        buttonContainerEl.appendChild(clickToExpandEl);
+    baseInfoContainerEl.appendChild(recipeTitleEl);
+    baseInfoContainerEl.appendChild(numberOfServingsEl);
+    baseInfoContainerEl.appendChild(kcalCountEl);
 
-        macroInfoContainerEl.appendChild(proteinAmountEl);
-        macroInfoContainerEl.appendChild(fatAmountEl);
-        macroInfoContainerEl.appendChild(carbAmountEl);
+    buttonContainerEl.appendChild(clickToExpandEl);
 
-        recipeCardEl[i].appendChild(baseInfoContainerEl);
-        recipeCardEl[i].appendChild(macroInfoContainerEl);
-        recipeCardEl[i].appendChild(imageContainerEl);
-        recipeCardEl[i].appendChild(buttonContainerEl);
+    macroInfoContainerEl.appendChild(proteinAmountEl);
+    macroInfoContainerEl.appendChild(fatAmountEl);
+    macroInfoContainerEl.appendChild(carbAmountEl);
 
-        clickToExpandEl.addEventListener("click", function(event){
-            var recipeClick = event.target.getAttribute("data-click");
-            if(cardClosed){
-                displayChosenRecipeCard(repos, recipeClick);
-                saveThisRecipeEl.setAttribute("display", "block");
-            };
-        })
-    }
+    recipeCardEl[i].appendChild(baseInfoContainerEl);
+    recipeCardEl[i].appendChild(macroInfoContainerEl);
+    recipeCardEl[i].appendChild(imageContainerEl);
+    recipeCardEl[i].appendChild(buttonContainerEl);
 
+    ukCardEl[i].classList = "custom-card";
+
+    clickToExpandEl.addEventListener("click", function(event){
+        var recipeClick = event.target.getAttribute("data-click");
+        if(cardClosed){
+            displayChosenRecipeCard(repos, recipeClick);
+            saveThisRecipeEl.setAttribute("display", "block");
+        };
+    });
 };
 
 clickToCloseEl.addEventListener("click", function(event){
@@ -238,6 +250,7 @@ function displayChosenRecipeCard(repos, recipeIndex) {
     var buttonContainerEl = document.createElement('div');
 
     saveThisRecipeEl.setAttribute("data-index", recipeIndex);
+    clickToCloseEl.setAttribute("class", "save-button");
 
     //Apply the text content using the gathered information and child elements
     recipeTitleEl.textContent = recipeTitle;
@@ -317,6 +330,7 @@ function displayChosenRecipeCard(repos, recipeIndex) {
     recipeCardEl[recipeIndex].appendChild(buttonContainerEl);
 
     clickToCloseEl.setAttribute("display", "block");
+    clickToCloseEl.setAttribute("class", "close-button");
     clickToCloseEl.setAttribute("data-click", i);
     clickToCloseEl.textContent = "Click to Close"
 
@@ -339,9 +353,6 @@ saveThisRecipeEl.addEventListener("click", function(event){
         //classes that the button needs
         recipeTitleHistoryEl.classList = "uk-button uk-button-default saved-recipe-button";
         saveRecipeContainerEl.appendChild(recipeUrlEl);
-    } else {
-        //Let the user know there is already a history button for a city if it was previously searched
-        alert("That recipe is already in your recents!");
     };
 
     //Store the new array with any additional cities in local storage
