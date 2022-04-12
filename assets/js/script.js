@@ -35,6 +35,14 @@ function getRecipeSearchApi(event) {
         isLoadingEl.textContent = "I'm loading! Please wait!";
         recipeCardContainerEl.appendChild(isLoadingEl);
     }
+
+    isError = false;
+    if(isError == false) {
+        var isErrorEl = document.createElement('div');
+        isErrorEl.textContent = "";
+        recipeCardContainerEl.appendChild(isErrorEl);
+    }
+
     
     // Fetch call for the API search, a function to display recipes is called when promise is fulfilled.
     fetch(recipeSearchUrl)
@@ -45,6 +53,7 @@ function getRecipeSearchApi(event) {
             isLoading = false;
             if(isLoading == false && isError == false){
                 isLoadingEl.innerHTML = "";
+                isErrorEl.innerHTML= "";
             }
             repos = data;
             displaySummaryRecipeCards(data); 
@@ -53,7 +62,7 @@ function getRecipeSearchApi(event) {
             console.log('Error:', error);
             isError = true;
             if(isError) {
-                isErrorEl = document.createElement('div');
+                //isErrorEl = document.createElement('div');
                 isLoadingEl.innerHTML = "";
                 isErrorEl.textContent = "Error! Try with another search term";
                 //recipeCardContainerEl.innerHTML = "";
