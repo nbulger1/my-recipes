@@ -56,7 +56,23 @@
 
 ## Screen Recording:
 
+![GIF demonstrating testing the recipe box for a variety of conditions as well as assessing all button functionality](./assets/images/screen_recording_final.gif)
+
 ## Directions for Future Development
-* Add a feature to handle multiple ingredients that can be found in users pantry
-* Add a feature to create shopping cart and request delivery from a grocery service
+* Improve upon error handling for incomplete calls
+* Autocomplete click off upon selection of an ingredient
+* Creating Multiple Keyword Options - Theoretical User Story
+##
+    As a homechef
+    I want to search the ingredients I already have in my kitchen
+    So I can find a recipe I don’t have go to the grocery store to make
+##
+* Shopping Cart Request - Theoretical User Story
+##
+    As a homechef
+    I want to put the possible shopping list items into a cart
+    So I can easily place a grocery delivery order
+##
+* Limitation - Allotted 10 clicks per minute which doesn’t allow for quick searching
+
 
