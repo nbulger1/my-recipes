@@ -2,24 +2,40 @@
 @import url('https://fonts.googleapis.com/css2?family=Marcellus&display=swap');
 
 
+:root {
+    --earthgreen: #363E24;
+    --mossgreen: #626945;
+    --warmyellow: #CEA452;
+    --softcream: #E3DDC5;
+}
+
 /**Custom Styling**/
 .custom-container {
     height: 100vh;
     overflow: hidden;
-    background-color: #aaaaaa;
-    overflow-y: auto;
+    background-color: var(--softcream);
+    overflow-y: hidden;
     position: relative;
 }
 
 .custom-nav {
-    background: #ECC3AD;
-    box-shadow: #00C896 0 1px 0,
-    #ECC3AD 0 2px 0;
+    background: var(--warmyellow);
+    box-shadow: var(--softcream) 0 1px 0,
+    var(--warmyellow) 0 2px 0;
     position: sticky;
     top: 0;
     z-index: 3;
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
+    padding-bottom: 1.8em;
+}
+
+
+.custom-logo {
+    margin: auto 5rem;
+    font-family: 'Marcellus', serif;
+    animation: slideIn .4s;
 }
 
 .custom-nav::before {
@@ -30,13 +46,13 @@
     height: 30px;
     bottom: -2px;
     left: 0;
-    border-right: #00C896 1px solid;
-    border-top: #00C896 1px solid;
-    box-shadow: #ECC3AD -1px -1px 0 inset,
-    #ECC3AD 1px -1px 0 inset,
-    #ECC3AD -1px 1px 0 inset,
-    #00C896 -2px 2px 0 inset,
-    #00C896 2px -2px 0 inset;
+    border-right: var(--softcream) 1px solid;
+    border-top: var(--softcream) 1px solid;
+    box-shadow: var(--warmyellow) -1px -1px 0 inset,
+    var(--warmyellow) 1px -1px 0 inset,
+    var(--warmyellow) -1px 1px 0 inset,
+    var(--softcream) -2px 2px 0 inset,
+    var(--softcream) 2px -2px 0 inset;
 }
 
 .custom-nav::after {
@@ -47,23 +63,28 @@
     height: 30px;
     bottom: -2px;
     right: 0;
-    border-left: #00C896 1px solid;
-    border-top: #00C896 1px solid;
-    box-shadow: #ECC3AD -1px -1px 0 inset,
-    #ECC3AD 1px -1px 0 inset,
-    #ECC3AD -1px 1px 0 inset,
-    #00C896 -2px 2px 0 inset,
-    #00C896 2px -2px 0 inset;
+    border-left: var(--softcream) 1px solid;
+    border-top: var(--softcream) 1px solid;
+    box-shadow: var(--warmyellow) -1px -1px 0 inset,
+    var(--warmyellow) 1px -1px 0 inset,
+    var(--warmyellow) -1px 1px 0 inset,
+    var(--softcream) -2px 2px 0 inset,
+    var(--softcream) 2px -2px 0 inset;
 }
 
 .custom-logo {
     margin: auto 5rem;
     font-family: 'Marcellus', serif;
     animation: slideIn .4s;
+    color: white;
+    text-shadow: var(--mossgreen) 2px 2px 0;
 }
 
 .custom-side {
-    background: gray;
+    background: #cac2a2;
+    height: auto;
+    padding: 2em 2em 2em 3.6em;
+    position: relative;
 }
 
 .custom-comment {
@@ -74,6 +95,7 @@
 
 .recipe-card-container {
     height: 93vh;
+    overflow-y: auto;
 }
 
 .custom-card {
@@ -81,6 +103,12 @@
     background-color: white;
     height: auto;
     transition: opacity .8s ease-in;
+    position: relative;
+    box-shadow: 3px 3px var(--mossgreen), 
+    5px 5px var(--softcream), 
+    6px 6px var(--mossgreen), 
+    -2px -2px var(--softcream), 
+    -3px -3px var(--mossgreen);
 }
 
 .custom-form {
@@ -90,18 +118,14 @@
 }
 
 .form-style {
-    border: 1px #00C896 solid;
-    box-shadow: 2px 2px #ECC3AD,
-    #00C896 3px 3px;
+    border: 2px var(--mossgreen) solid;
     transition: all .5s ease-in-out;
     background: #ffffff;
     color: #000000;
 }
 
 .form-style:hover {
-    border: 1px #00C896 solid;
-    box-shadow: 2px 2px #ECC3AD,
-    #00C896 4px 4px;
+    border: 2px var(--mossgreen) solid;
     transition: all .5s ease-in-out;
 }
 
@@ -118,6 +142,16 @@
 .custom-submit {
     width: 8rem;
     background: white;
+    border: var(--mossgreen) 2px solid;
+}
+
+.custom-submit:hover {
+    box-shadow: inset 2px 2px var(--softcream),
+    inset -2px -2px var(--softcream),
+    var(--warmyellow) 4px 4px inset,
+    var(--warmyellow) -4px -4px inset,
+    inset 1.4em 1.4em var(--softcream),
+    inset -1.4em -1.4em var(--softcream);
 }
 
 .hidden {
@@ -134,12 +168,12 @@
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #888;
+    background: var(--earthgreen);
     border-radius: 50px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #555;
+    background: var(--warmyellow);
 }
 
 .hidden {
@@ -157,29 +191,33 @@
 
 .recipe-card-img {
     width: 200px;
-    border: black 2px solid;
-    box-shadow: white 3px 3px 0, black 5px 5px 0;
+    box-shadow: var(--warmyellow) 4px 4px 0;
     grid-area: 1/4;
+    box-shadow: var(--warmyellow) 4px 4px 0, var(--mossgreen) -4px 4px 0;
 }
 
 .recipe-card-info {
     width: auto;
+    border-right: 1px var(--earthgreen) solid;
+    box-shadow: 2px 0 0 var(--warmyellow);
 }
 
 .recipe-card-info h3 {
     font-size: 2rem;
-    text-align: center;
 }
 
 
 .recipe-card-nutrition {
     width: auto;
+    margin-top: 3em;
 }
 
 .recipe-card-nutrition-label {
-    grid-area: 1/4;
     border: black 2px solid;
-    font-family: 'Helvetica', 'Arial', sans-serif
+    font-family: 'Helvetica', 'Arial', sans-serif;
+    height: fit-content;
+    text-align: center;
+    grid-area: 4/4;
 }
 
 .recipe-card-nutrition-label > h4 {
@@ -193,12 +231,16 @@
     margin-right: 30%;
 }
 
+.recipe-card-ingredient-list {
+    grid-area: 3/4;
+}
+
 .saved-recipe-container {
     background: white;
-    margin: 3vh 3vh;
-    height: 80%;
+    height: 100%;
     overflow-y: auto;
-    position: relative;
+    box-shadow: 5px 5px var(--softcream);
+    border: 1px var(--softcream) solid;
 }
 
 .saved-recipe-button {
@@ -210,19 +252,42 @@
 .clear-recipe-history {
     margin: 0 auto;
     width: 100%;
-    position: sticky;
     top: 0;
     background: white;
 }
 
+.save-button {
+    position: absolute;
+    top: 30px;
+    background: var(--warmyellow);
+    transition: background .5s;
+}
+
 .expand-button {
     position: absolute;
-    left: 0;
-    top: 0;
+    left: 50%;
+    bottom: 5px;
+    background: var(--warmyellow);
+    transition: background .5s;
+}
+
+.custom-card button {
+    background: var(--warmyellow);
+    transition: background .5s;
+    box-shadow: var(--softcream) 1px 1px 0 inset,var(--softcream)-1px -1px 0 inset, var(--softcream) -1px 1px 0 inset, var(--softcream) 1px -1px 0 inset;
+    border: var(--mossgreen) 4px double;
+    border-radius: 20px;
+}
+
+.custom-card button:hover {
+    background: #f7a121;
+    transition: background .5s;
 }
 
 .close-button {
     position: absolute;
+    left: 50%;
+    bottom: 5px;
 }
 
 /**Animation**/
@@ -248,7 +313,7 @@
     };
 };
 
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: 400px) {
     .recipe-card-container {
         height: 90vh;
         width: 100vw;
@@ -263,7 +328,21 @@
         flex-direction: column;
     };
 
+    .custom-logo {
+        text-align: center;
+    };
+
     .custom-side {
         height: 60vh;
     };
+
+    .custom-form {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+    };
+
+    .recipe-card-img {
+        height: 100px;
+    }
 };
