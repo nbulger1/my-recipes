@@ -210,6 +210,7 @@
     font-family: 'Helvetica', 'Arial', sans-serif;
     height: fit-content;
     text-align: center;
+    grid-area: 4/4;
 }
 
 .recipe-card-nutrition-label > h4 {
@@ -221,6 +222,10 @@
 .recipe-card-nutrition-label > span {
     font-weight: 700;
     margin-right: 30%;
+}
+
+.recipe-card-ingredient-list {
+    grid-area: 3/4;
 }
 
 .saved-recipe-container {
